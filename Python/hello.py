@@ -45,11 +45,25 @@ for i in range(mines):
     surrounding.append((x+1,y+1))
     if (x,y) in surrounding:
       surrounding.remove((x,y))
+    for x,y in surrounding:
+      if x<0 or y<0 or x> width or y > height:
+        surrounding.remove((x,y))
+  
 
 
 print(Mine_list)
 print(surrounding)
 
+table = []
+for i in range(height+1):
+  row = []
+  for j in range(width+1):
+    row.append((j,9-i))
+  table.append(row)
+for row in table:
+  print(row)
+
+str(j)+","+ str(9-i)
 print("In order to select the location you want to reveal or place a flag, enter the coordinates in the format: x,y,flag/reveal")
 
 Guess = input("Guess: ").split(",")
@@ -66,6 +80,21 @@ while action != "flag" and action != "reveal":
 
 Guess = (x,y)
 print(Guess)
+if action == 'flag':
+  for row in table:
+    if Guess in row:
+      flags -=1
+      row[row.index(Guess)] = "F"
+for row in table:
+  print(row)
 
-if Guess in Mine_list and action == "reveal":
-  print("You hit a mine! Game Over!")
+if action == "reveal":
+  if Guess in Mine_list:
+    print("You hit a mine! Game Over!")
+    for row in table:
+      for mine in Mine_list:
+        if mine in row:
+          row[row.index(mine)] = "X"
+
+for row in table:
+  print(row)
