@@ -5,8 +5,25 @@ Mine_list = []
 surrounding = []
 import random
 Game_over = False
+rps_scores = {}
 
-print("Game compendium \n 1: Rock, Paper, Scisssors Minus \n 2: Visual Memory Test \n 3: Minesweeper")
+account_create = input("Would you like to create an account to save your progress? \n 1: Yes \n 2: No").lower()
+
+while account_create not in ["1","2"]:
+  account_create = input("Invalid input. Please enter 1 for Yes or 2 for No: ").lower()
+if account_create == "1":
+  username = input("Enter a username: ")
+  password = input("Enter a password: ")
+  usernamedictionary = {}
+  if username not in usernamedictionary:
+    usernamedictionary[username] = password
+  else:
+    print("Username already exists. Please try again.")
+    username = input("Enter a username: ")
+    password = input("Enter a password: ")
+""" Somehow stores this dictionary in a file so that it can be accessed later. """
+
+print("Game compendium \n 1: Rock, Paper, Scissors Minus \n 2: Visual Memory Test \n 3: Minesweeper")
 rps_streak = 0
 Game_chosen = input("Choose a game by entering the corresponding number: ")
 while Game_chosen not in ["1","2","3"]:
@@ -41,7 +58,25 @@ if Game_chosen == "1":
   computer_option.remove(cremove)
   print("You chose to remove: " + remove)
   print("The computer chose to remove: " + cremove)
+  print("You are left with: " + player_choice[0] + "!" + "\n The computer is left with: " + computer_option[0] + "!")
+  if player_choice[0] == computer_option[0]:
+    print("It's a tie!")
+  elif (player_choice[0] == "rock" and computer_option[0] == "scissors") or (player_choice[0] == "scissors" and computer_option[0] == "paper") or (player_choice[0] == "paper" and computer_option[0] == "rock"):
+    print("You Win!")
+    rps_streak += 1
+  else:
+    print("You Lose!")
+    rps_streak = 0
+  print("Your current win streak is: " + str(rps_streak))
 
+  continue_game = int(input("Would you like to continue playing? \n If you leave now then your score will be scored \n 1: Yes n 2: No"))
+  while continue_game not in [1,2]:
+    continue_game = int(input("Invalid input. Please enter 1 for Yes or 2 for No: "))
+  if continue_game == 1:
+    print('a')
+  if continue_game == 2:
+    print("Thanks for playing!")
+    rps_scores[username] = rps_streak
 if Game_chosen == "3":
   print("Welcome to Game 3 of the Compendium: Minesweeper!")
   print("To play this game, enter a difficulty level")
@@ -93,12 +128,12 @@ if Game_chosen == "3":
   for i in range(height+1):
     row = []
     for j in range(width+1):
-      row.append((j,9-i))
+      row.append((j,height-i))
     table.append(row)
   for row in table:
     print(row)
 
-  str(j)+","+ str(9-i)
+  str(j)+","+ str(height-i)
   print("In order to select the location you want to reveal or place a flag, enter the coordinates in the format: x,y,flag/reveal")
 
   while Game_over == False:
