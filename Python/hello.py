@@ -4,10 +4,11 @@ grid_size = [0,0,0,0]
 Mine_list = []
 surrounding = []
 import random
-Game_over = False
+Game_overMS = False
 rps_scores = {}
+rpscontinue = True
 
-account_create = input("Would you like to create an account to save your progress? \n 1: Yes \n 2: No").lower()
+account_create = input("Would you like to create an account to save your progress? \n 1: Yes \n 2: No\n").lower()
 
 while account_create not in ["1","2"]:
   account_create = input("Invalid input. Please enter 1 for Yes or 2 for No: ").lower()
@@ -29,54 +30,11 @@ Game_chosen = input("Choose a game by entering the corresponding number: ")
 while Game_chosen not in ["1","2","3"]:
   Game_chosen = input("Invalid Input. Please enter 1, 2, or 3 to choose a game: ")
 if Game_chosen == "1":
-  print("Welcome to Game 1 of the Compendium: Rock, Paper, Scissors Minus!")
+  print("Welcome to Game 1 of the Compendium: Rock, Paper, Scissors Minus One!")
   print("To play this game, enter rock, paper or scissors to make your choice.")
   options = ["rock", "paper", "scissors"]
-  player_choice = []
-  first_option = input("Enter your choice: ").lower()
-  while first_option not in options:
-    first_option = input("Invalid input. Please enter rock, paper or scissors: ").lower()
-  player_choice.append(first_option)
-  second_option = input("Enter your second choice: ").lower()
-  while second_option not in options:
-    second_option = input("Invalid input. Please enter rock, paper or scissors: ").lower()
-  player_choice.append(second_option)
-  computer_option = []
-  computer_option.append(random.choice(options))
-  computer_option.append(random.choice(options))
-  if computer_option[0] == computer_option[1]:
-    while computer_option[0] == computer_option[1]:
-      computer_option[1] = random.choice(options)
-  print("You chose: " + player_choice[0] + " and " + player_choice[1])
-  print("The computer chose: " + computer_option[0] + " and " + computer_option[1])
-  print("You will now choose to remove one of your choices and the computer will do the same.")
-  remove = input(player_choice[0]+ "or " + player_choice[1] + ", which do you want to remove? ").lower()
-  while remove not in player_choice:
-    remove = input(f"Invalid input. Please choose one of your options to remove: {player_choice[0], player_choice[1]} ").lower()
-  player_choice.remove(remove)
-  cremove = random.choice(computer_option)
-  computer_option.remove(cremove)
-  print("You chose to remove: " + remove)
-  print("The computer chose to remove: " + cremove)
-  print("You are left with: " + player_choice[0] + "!" + "\n The computer is left with: " + computer_option[0] + "!")
-  if player_choice[0] == computer_option[0]:
-    print("It's a tie!")
-  elif (player_choice[0] == "rock" and computer_option[0] == "scissors") or (player_choice[0] == "scissors" and computer_option[0] == "paper") or (player_choice[0] == "paper" and computer_option[0] == "rock"):
-    print("You Win!")
-    rps_streak += 1
-  else:
-    print("You Lose!")
-    rps_streak = 0
-  print("Your current win streak is: " + str(rps_streak))
 
-  continue_game = int(input("Would you like to continue playing? \n If you leave now then your score will be scored \n 1: Yes n 2: No"))
-  while continue_game not in [1,2]:
-    continue_game = int(input("Invalid input. Please enter 1 for Yes or 2 for No: "))
-  if continue_game == 1:
-    print('a')
-  if continue_game == 2:
-    print("Thanks for playing!")
-    rps_scores[username] = rps_streak
+
 if Game_chosen == "3":
   print("Welcome to Game 3 of the Compendium: Minesweeper!")
   print("To play this game, enter a difficulty level")
@@ -128,15 +86,20 @@ if Game_chosen == "3":
   for i in range(height+1):
     row = []
     for j in range(width+1):
-      row.append((j,height-i))
+      row.append(0)
     table.append(row)
+  for x,y in Mine_list:
+    table[height-y][x] = 9
+  for x,y in surrounding:
+    if table[height-y][x] != 9:
+      table[height-y][x] += 1
   for row in table:
     print(row)
 
   str(j)+","+ str(height-i)
   print("In order to select the location you want to reveal or place a flag, enter the coordinates in the format: x,y,flag/reveal")
-
-  while Game_over == False:
+  print("The first 'tile' is (0,0) which is the bottom left corner of the grid. The top right corner is (" + str(width) + "," + str(height) + ")")
+  while Game_overMS == False:
     Guess = input("Guess: ").split(",")
     print(Guess)
     x = int(Guess[0])
@@ -148,15 +111,14 @@ if Game_chosen == "3":
     action = Guess[2]
     while action != "flag" and action != "reveal":
       action = input("Invalid action. Please enter 'flag' or 'reveal': ")
+
     Guess = (x,y)
     print(Guess)
     if action == 'flag':
       for row in table:
         if Guess in row:
-          flags -=1
-          row[row.index(Guess)] = "F"
-    for row in table:
-      print(row)
+          flags -= 1
+          row[row.index(Guess)] = 'F'
     print("Flags remaining: " + str(flags))
 
     if action == "reveal":
@@ -164,7 +126,8 @@ if Game_chosen == "3":
         print("You hit a mine! Game Over!")
         for row in table:
           for mine in Mine_list:
-            if mine in row:
-              row[row.index(mine)] = "X"
+            for x,y in Mine_list:
+              table[height-y][x] = 9
+        Game_overMS = True
     for row in table:
       print(row)
