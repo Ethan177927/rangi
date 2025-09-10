@@ -5,7 +5,9 @@ Mine_list = []
 surrounding = []
 import random
 Game_overMS = False
+import tkinter as tk
 import rpsminus1
+import visualmemorytest
 import minesweeper
 
 
@@ -30,12 +32,10 @@ rps_streak = 0
 Game_chosen = input("Choose a game by entering the corresponding number: ")
 while Game_chosen not in ["1","2","3"]:
   Game_chosen = input("Invalid Input. Please enter 1, 2, or 3 to choose a game: ")
-if Game_chosen == "1":
-  print("Welcome to Game 1 of the Compendium: Rock, Paper, Scissors Minus One!")
-  print("To play this game, enter rock, paper or scissors to make your choice.")
-  options = ["rock", "paper", "scissors"]
 
 if Game_chosen == "1":
   rpsminus1.rps_game()
+if Game_chosen == "2":
+  visualmemorytest.vmt()
 if Game_chosen == "3":
   minesweeper.minesweeper_game()

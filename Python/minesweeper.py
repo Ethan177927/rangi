@@ -113,16 +113,13 @@ def minesweeper_game():
         surroundingsafe.append((x-1,y+1))
         surroundingsafe.append((x,y+1))
         surroundingsafe.append((x+1,y+1))
-        if (x,y) in surroundingsafe:
+        if (x,y) in Mine_list or (x,y) in surrounding:
           surroundingsafe.remove((x,y))
-        
         for (a,b) in surroundingsafe:
           if a<0 or b<0 or a> width or b > height:
             surroundingsafe.remove((a,b))
-          if (a,b) in surrounding:
-            surroundingsafe.remove((a,b))
         for (a,b) in surroundingsafe:
-          if table[height-b][a] == 0:
+          if (a,b) not in Mine_list and (a,b) not in surrounding:
             table[height-b][a] = 7
         for row in table:
           print(row)
