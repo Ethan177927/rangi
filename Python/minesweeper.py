@@ -14,14 +14,14 @@ def minesweeper_game():
   print("Medium: 16x16 grid with 40 mines")
   print("Hard: 20x24 grid with 99 mines")
 
-  if Difficulty not in options:
+  while Difficulty not in options:
     Difficulty = input("Choose a difficulty (easy, medium, hard): ").lower()
 
   if Difficulty == "easy":
     grid_size = [9,9,10,10]
-  if Difficulty == "medium":
+  elif Difficulty == "medium":
     grid_size = [16,16,40,40]
-  if Difficulty == "hard":
+  elif Difficulty == "hard":
     grid_size = [20,24,99,99]
 
   flags = grid_size[3]
@@ -60,9 +60,9 @@ def minesweeper_game():
     for j in range(width+1):
       row.append(0)
     table.append(row)
-  for x,y in Mine_list:
+  for (x,y) in Mine_list:
     table[height-y][x] = 9
-  for x,y in surrounding:
+  for (x,y) in surrounding:
     if table[height-y][x] != 9:
       table[height-y][x] += 1
   for row in table:
@@ -87,10 +87,22 @@ def minesweeper_game():
     Guess = (x,y)
     print(Guess)
     if action == 'flag':
-      for row in table:
-        if Guess in row:
-          flags -= 1
-          row[row.index(Guess)] = 'F'
+      if flags == 0:
+        print("You have no flags remaining!")
+        continue
+      if table[height-y][x] == 8:
+        print("There is already a flag there, it will now be removed and it will be added back to your flag count.")
+        flags +=1
+        if (x,y) in Mine_list:
+          table[height-y][x] = 9
+        elif (x,y) in surrounding:
+            table[height-y][x] = 0
+# make sure to make this actually replace the number
+        else:
+          table[height-y][x] = 0
+
+      flags -= 1
+      table[height-y][x] = 8
       print("Flags remaining: " + str(flags))
       for row in table:
         print(row)
@@ -100,7 +112,7 @@ def minesweeper_game():
         print("You hit a mine! Game Over!")
         for row in table:
           for mine in Mine_list:
-            for x,y in Mine_list:
+            for (x,y) in Mine_list:
               table[height-y][x] = 9
       else:
         table[height-y][x] = 7
@@ -113,14 +125,12 @@ def minesweeper_game():
         surroundingsafe.append((x-1,y+1))
         surroundingsafe.append((x,y+1))
         surroundingsafe.append((x+1,y+1))
-        if (x,y) in Mine_list or (x,y) in surrounding:
-          surroundingsafe.remove((x,y))
-        for (a,b) in surroundingsafe:
-          if a<0 or b<0 or a> width or b > height:
-            surroundingsafe.remove((a,b))
-        for (a,b) in surroundingsafe:
-          if (a,b) not in Mine_list and (a,b) not in surrounding:
-            table[height-b][a] = 7
+        for (x,y) in surroundingsafe:
+          if x<0 or y<0 or x> width or y > height:
+            surroundingsafe.remove((x,y))
+        for (x,y) in surroundingsafe:
+          table[height-y][x] = 7
         for row in table:
           print(row)
         Game_overMS = True
+minesweeper_game()
