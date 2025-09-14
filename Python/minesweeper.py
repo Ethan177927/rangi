@@ -18,11 +18,11 @@ def minesweeper_game():
     Difficulty = input("Choose a difficulty (easy, medium, hard): ").lower()
 
   if Difficulty == "easy":
-    grid_size = [9,9,10,10]
+    grid_size = [8,8,10,10]
   elif Difficulty == "medium":
-    grid_size = [16,16,40,40]
+    grid_size = [15,15,40,40]
   elif Difficulty == "hard":
-    grid_size = [20,24,99,99]
+    grid_size = [19,23,99,99]
 
   flags = grid_size[3]
   mines = grid_size[2]
@@ -84,6 +84,7 @@ def minesweeper_game():
     while action != "flag" and action != "reveal":
       action = input("Invalid action. Please enter 'flag' or 'reveal': ")
 
+
     Guess = (x,y)
     print(Guess)
     if action == 'flag':
@@ -133,4 +134,3 @@ def minesweeper_game():
         for row in table:
           print(row)
         Game_overMS = True
-minesweeper_game()

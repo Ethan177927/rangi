@@ -9,6 +9,9 @@ import tkinter as tk
 import rpsminus1
 import visualmemorytest
 import minesweeper
+import ihatetk
+
+ihatetk.tk_window()
 
 
 account_create = input("Would you like to create an account to save your progress? \n 1: Yes \n 2: No\n").lower()
@@ -28,10 +31,10 @@ if account_create == "1":
 """ Somehow stores this dictionary in a file so that it can be accessed later. """
 
 print("Game compendium \n 1: Rock, Paper, Scissors Minus \n 2: Visual Memory Test \n 3: Minesweeper")
-rps_streak = 0
 Game_chosen = input("Choose a game by entering the corresponding number: ")
 while Game_chosen not in ["1","2","3"]:
   Game_chosen = input("Invalid Input. Please enter 1, 2, or 3 to choose a game: ")
+
 
 if Game_chosen == "1":
   rpsminus1.rps_game()

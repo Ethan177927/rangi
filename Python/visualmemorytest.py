@@ -1,7 +1,7 @@
+
+
 def vmt():
   Grid = []
-  global redo
-  redo = 0
   if redo != 1:
     rows = int(input("Enter the number of rows: "))
     columns = int(input("Enter the number of columns: "))
@@ -86,4 +86,3 @@ def vmt():
     else:
       print("Thank you for playing!")
   #saves score to a file
-vmt()
