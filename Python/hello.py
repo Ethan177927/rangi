@@ -6,28 +6,27 @@ surrounding = []
 import random
 Game_overMS = False
 import tkinter as tk
-import rpsminus1
-import visualmemorytest
-import minesweeper
+import Python.Games.rpsminus1 as rpsminus1
+import Python.Games.visualmemorytest as visualmemorytest
+import Python.Games.minesweeper as minesweeper
 import ihatetk
 
 ihatetk.tk_window()
 
 
-account_create = input("Would you like to create an account to save your progress? \n 1: Yes \n 2: No\n").lower()
 
-while account_create not in ["1","2"]:
-  account_create = input("Invalid input. Please enter 1 for Yes or 2 for No: ").lower()
-if account_create == "1":
-  username = input("Enter a username: ")
-  password = input("Enter a password: ")
-  usernamedictionary = {}
-  if username not in usernamedictionary:
-    usernamedictionary[username] = password
-  else:
-    print("Username already exists. Please try again.")
+
+username = input("Enter a username: ")
+password = input("Enter a password: ")
+usernamedictionary = {}
+if username not in usernamedictionary:
+  usernamedictionary[username] = password
+else:
+  print("Username already exists. Please try again.")
+  while username in usernamedictionary:
     username = input("Enter a username: ")
     password = input("Enter a password: ")
+  usernamedictionary[username] = password
 """ Somehow stores this dictionary in a file so that it can be accessed later. """
 
 print("Game compendium \n 1: Rock, Paper, Scissors Minus \n 2: Visual Memory Test \n 3: Minesweeper")

@@ -6,7 +6,7 @@ def minesweeper_game():
   surrounding = []
   import random
   Game_overMS = False
-  import rpsminus1
+  import Python.Games.rpsminus1 as rpsminus1
 
   print("Welcome to Game 3 of the Compendium: Minesweeper!")
   print("To play this game, enter a difficulty level")

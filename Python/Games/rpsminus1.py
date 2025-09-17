@@ -1,6 +1,42 @@
 
+import tkinter as tk
+from tkinter import * 
+import random
+
+
 
 def rps_game():
+  rps1 = Tk()
+  rps1.geometry("900x600")
+  rps1.configure(bg="lightgrey")
+  rps1.title("Rock Paper Scissors Minus")
+  title = Label(rps1, text="Rock Paper Scissors Minus One", font=("Roman", 30), bg = "lightgrey")
+  title.pack(padx = 10, pady = 40)
+  
+  
+  player_choice1 = StringVar()
+  player_choice2 = StringVar()
+
+
+  result = StringVar()
+  options = ["rock", "paper", "scissors"]
+
+
+  
+  computer_option = []
+  computer_option.append(random.choice(options))
+  computer_option.append(random.choice(options))
+  if computer_option[0] == computer_option[1]:
+    while computer_option[0] == computer_option[1]:
+      computer_option[1] = random.choice(options)
+
+  
+  
+  
+  rps1.mainloop()
+
+
+
   import random
   rps_scores = {}
   rpscontinue = True
@@ -61,3 +97,4 @@ def rps_game():
             print("Your scores have been saved as follows: " + str(rps_scores))
         else:
             print("You have no score to save. Better luck next time!")
+rps_game()
