@@ -1,8 +1,10 @@
 
+
+
+import random 
+
 import tkinter as tk
 from tkinter import * 
-import random
-
 
 
 def rps_game():
@@ -16,6 +18,7 @@ def rps_game():
   
   player_choice1 = StringVar()
   player_choice2 = StringVar()
+
 
 
   result = StringVar()
@@ -37,7 +40,6 @@ def rps_game():
 
 
 
-  import random
   rps_scores = {}
   rpscontinue = True
   player_choice = []

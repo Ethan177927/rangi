@@ -6,10 +6,10 @@ surrounding = []
 import random
 Game_overMS = False
 import tkinter as tk
-import Python.Games.rpsminus1 as rpsminus1
-import Python.Games.visualmemorytest as visualmemorytest
-import Python.Games.minesweeper as minesweeper
+import rpsminus1
+import visualmemorytest
 import ihatetk
+import minesweeper
 
 ihatetk.tk_window()
 

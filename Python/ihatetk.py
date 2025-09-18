@@ -6,8 +6,6 @@ from tkinter import *
 def tk_window():
   tkmain = tk.Tk()
 
-
-
  # sets title
   tkmain.title("Alston Games Comependium")
 
@@ -42,10 +40,15 @@ def tk_window():
   sub_btn = tk.Button(tkmain, text = 'Submit', command = submit)
   sub_btn.pack(padx = 10, pady = 10)
 
+  def minesweeper():
+    print("minesweeper opening...")
+    
 
 
-  minesweep = tk.Button(tkmain, text="Minesweeper", font=("Roman", 20), bg = "white", fg = "black", width = 20, height = 3)
+
+  minesweep = tk.Button(tkmain, text="Minesweeper", font=("Roman", 20), bg = "white", fg = "black", width = 20, height = 3, command = minesweeper)
   minesweep.pack(padx = 10, pady = 10)
+  
 
 
   rps = tk.Button(tkmain, text="Rock Paper Scissors", font=("Roman", 20), bg = "white", fg = "black", width = 20, height = 3)
