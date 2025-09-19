@@ -1,8 +1,4 @@
-
-
-
 import random 
-
 import tkinter as tk
 from tkinter import * 
 
@@ -15,13 +11,7 @@ def rps_game():
   title = Label(rps1, text="Rock Paper Scissors Minus One", font=("Roman", 30), bg = "lightgrey")
   title.pack(padx = 10, pady = 40)
   
-  
-  player_choice1 = StringVar()
-  player_choice2 = StringVar()
 
-
-
-  result = StringVar()
   options = ["rock", "paper", "scissors"]
 
 
@@ -33,13 +23,15 @@ def rps_game():
     while computer_option[0] == computer_option[1]:
       computer_option[1] = random.choice(options)
 
+
   
-  
+  play_btn = tk.Button(rps1, text = 'Play?', command = ihatetkinterigiveuponthisfornow, width = 25, height = 10, font = ("Roman", 20), bg = "white", fg = "black")
+  play_btn.pack(padx = 10, pady = 10)
   
   rps1.mainloop()
 
-
-
+rps_game()
+'''
   rps_scores = {}
   rpscontinue = True
   player_choice = []
@@ -100,3 +92,4 @@ def rps_game():
         else:
             print("You have no score to save. Better luck next time!")
 rps_game()
+'''

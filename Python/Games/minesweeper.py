@@ -6,7 +6,6 @@ def minesweeper_game():
   surrounding = []
   import random
   Game_overMS = False
-  import Python.Games.rpsminus1 as rpsminus1
 
   print("Welcome to Game 3 of the Compendium: Minesweeper!")
   print("To play this game, enter a difficulty level")
@@ -60,11 +59,7 @@ def minesweeper_game():
     for j in range(width+1):
       row.append(0)
     table.append(row)
-  for (x,y) in Mine_list:
-    table[height-y][x] = 9
-  for (x,y) in surrounding:
-    if table[height-y][x] != 9:
-      table[height-y][x] += 1
+
   for row in table:
     print(row)
 
@@ -81,7 +76,7 @@ def minesweeper_game():
     while y > height or y<0:
       y = int(input("Invalid y co-ordinate. Please enter a value between 0 and "+ str(height)+ ": ")) 
     action = Guess[2]
-    while action != "flag" and action != "reveal":
+    while action not in ['flag','reveal']:
       action = input("Invalid action. Please enter 'flag' or 'reveal': ")
 
 
@@ -92,29 +87,33 @@ def minesweeper_game():
         print("You have no flags remaining!")
         continue
       if table[height-y][x] == 8:
-        print("There is already a flag there, it will now be removed and it will be added back to your flag count.")
-        flags +=1
+        print("There is already a flag there, it will now be removed and be added back to your flag count.")
+        flags += 1
         if (x,y) in Mine_list:
           table[height-y][x] = 9
         elif (x,y) in surrounding:
-            table[height-y][x] = 0
-# make sure to make this actually replace the number
+            number = surrounding.count((x,y))
+            table[height-y][x] = number
         else:
           table[height-y][x] = 0
-
-      flags -= 1
-      table[height-y][x] = 8
+      else:
+        table[height-y][x] = 8
+        flags -= 1
       print("Flags remaining: " + str(flags))
       for row in table:
         print(row)
 
+    Guess = (x,y)
     if action == "reveal":
       if Guess in Mine_list:
         print("You hit a mine! Game Over!")
-        for row in table:
-          for mine in Mine_list:
-            for (x,y) in Mine_list:
-              table[height-y][x] = 9
+        Game_overMS = True
+        for (x,y) in Mine_list:
+          table[height-y][x] = 9
+      elif Guess in surrounding:
+        print("washed")
+        number = surrounding.count((x,y))
+        table[height-y][x] = number
       else:
         table[height-y][x] = 7
         surroundingsafe = []
@@ -127,10 +126,11 @@ def minesweeper_game():
         surroundingsafe.append((x,y+1))
         surroundingsafe.append((x+1,y+1))
         for (x,y) in surroundingsafe:
-          if x<0 or y<0 or x> width or y > height:
+          if x < 0 or y < 0 or x > width or y > height or (x,y) in Mine_list or (x,y) in surrounding:
             surroundingsafe.remove((x,y))
         for (x,y) in surroundingsafe:
           table[height-y][x] = 7
-        for row in table:
-          print(row)
-        Game_overMS = True
+      for row in table:
+        print(row)
+
+minesweeper_game()
