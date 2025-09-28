@@ -2,13 +2,25 @@ import random
 import tkinter as tk
 from tkinter import * 
 
+
+
+
 player_choice = []
+button_choice = []
 options = ["rock", "paper", "scissors"]
 computer_option = []
 
 def rps_game():
   rps1 = Tk()
-  rps1.geometry("900x600")
+  screen_width = rps1.winfo_screenwidth()
+  screen_height = rps1.winfo_screenheight()
+
+    # found off of google to get the screenheigth and width of the user's screen.
+  swidth = int(screen_width/2 - 850/2)
+  sheight = int(screen_height/2 - 650/2)
+
+    # sets size of the window and the +swidth and +sheight are x,y values for where the window opens on the screen.
+  rps1.geometry(f"850x650+{swidth}+{sheight}")
   rps1.configure(bg="lightgrey")
   rps1.title("Rock Paper Scissors Minus")
   title = Label(rps1, text="Rock Paper Scissors Minus One", font=("Roman", 30), bg = "lightgrey")
@@ -29,11 +41,17 @@ def rps_game():
         else:
           buttons[i].pack_forget()
       print("You chose: " + player_choice[0] + " and " + player_choice[1])
-
-      
-
+      print("The computer chose: " + computer_option[0] + " and " + computer_option[1])
+      removal = Label(rps1,text = "Remove One!", font = ("Roman", 20), bg = "lightgrey")
+      removal.pack(pady = 10)
+      botselect = Label(rps1, text = f"The computer is choosing...  {computer_option[0]} and {computer_option[1]}", font = ("Roman", 15), bg = "lightgrey")
+      botselect.pack(pady = 10)
+      for i in range(2):
+        button_choice[i].pack(padx =10, pady = 10, side = "left")
+ 
   def pick(choice, button):
     player_choice.append(choice)
+    button_choice.append(button)
     print(choice)
     button.pack_forget()
     check()
@@ -58,6 +76,7 @@ def rps_game():
   scissorbtn = tk.Button(framerps, text = 'Scissors', command = lambda: pick("scissors", scissorbtn), width = 15, height = 5, font = ("Roman", 15), bg = "white", fg = "black")
   
   buttons = [rockbtn, paperbtn, scissorbtn]
+
 
   rps1.mainloop()
 
