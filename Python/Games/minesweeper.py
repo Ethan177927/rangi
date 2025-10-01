@@ -1,4 +1,37 @@
+import tkinter as tk
+from tkinter import *
+
 def minesweeper_game():  
+  tkmine = tk.Tk() 
+  tkmine.title("Minesweeper")
+
+  screen_width = tkmine.winfo_screenwidth()
+  screen_height = tkmine.winfo_screenheight()
+
+  # found off of google to get the screenheigth and width of the user's screen.
+  swidth = int(screen_width/2 - 850/2)
+  sheight = int(screen_height/2 - 650/2)
+
+  # sets size of the window and the +swidth and +sheight are x,y values for where the window opens on the screen.
+  tkmine.geometry(f"850x650+{swidth}+{sheight}")
+  row = 16
+  column = 16
+  frame = tk.Frame(tkmine)
+  frame.pack(expand = True, fill = "both")
+
+  for x in range(row):
+    frame.grid_rowconfigure( x, weight = 1, uniform = "row")
+  for y in range(column):
+    frame.grid_columnconfigure(y,  weight = 1, uniform = "column")
+  for x in range (row):
+    for y in range (column):
+      b = Button(frame, text = " ", bg = "lightgrey", fg = "black")
+      b.grid(row = x, column = y, sticky = "nsew") 
+  tkmine.mainloop()
+
+
+
+
   options = ["easy", "medium", "hard"]
   Difficulty = ""
   grid_size = [0,0,0,0]
