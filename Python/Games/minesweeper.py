@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import *
-
+height = -1
 def minesweeper_game():  
   tkmine = tk.Tk() 
   tkmine.title("Minesweeper")
@@ -14,20 +14,7 @@ def minesweeper_game():
 
   # sets size of the window and the +swidth and +sheight are x,y values for where the window opens on the screen.
   tkmine.geometry(f"850x650+{swidth}+{sheight}")
-  row = 16
-  column = 16
-  frame = tk.Frame(tkmine)
-  frame.pack(expand = True, fill = "both")
-
-  for x in range(row):
-    frame.grid_rowconfigure( x, weight = 1, uniform = "row")
-  for y in range(column):
-    frame.grid_columnconfigure(y,  weight = 1, uniform = "column")
-  for x in range (row):
-    for y in range (column):
-      b = Button(frame, text = " ", bg = "lightgrey", fg = "black")
-      b.grid(row = x, column = y, sticky = "nsew") 
-  tkmine.mainloop()
+  
 
 
 
@@ -60,8 +47,30 @@ def minesweeper_game():
   mines = grid_size[2]
   width = grid_size[0]
   height = grid_size[1]
+  
+  buttons = {}
+  def createGrid():
+    frame = tk.Frame(tkmine)
+    frame.pack(fill = "both", expand = True, side = "top")
+    for x in range(height):
+      frame.grid_rowconfigure(x, weight = 1, uniform = "row")
 
+    for y in range(width):
+      frame.grid_columnconfigure(y,  weight = 1, uniform = "column")
 
+    for x in range (height):
+      for y in range (width):
+        b = Button(frame, text = " ", bg = "lightgrey", fg = "black")
+        b.grid(row = height-1-y, column = x, sticky = "nsew") 
+
+        buttons[(x,y)] = b
+        b.config(command = lambda x=x, y=y: onClick(x,y))
+
+  def onClick(x,y):
+    print(f"Button ({x},{y}) clicked")
+
+  createGrid()
+  
   for i in range(mines):
     x = random.randint(0,width-1)
     y = random.randint(0,height-1)
@@ -165,5 +174,6 @@ def minesweeper_game():
           table[height-y][x] = 7
       for row in table:
         print(row)
+  tkmine.mainloop()
 
 minesweeper_game()
