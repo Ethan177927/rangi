@@ -61,12 +61,12 @@ def minesweeper_game():
     for x in range (height):
       for y in range (width):
         b = Button(frame, text = " ", bg = "lightgrey", fg = "black")
-        b.grid(row = height-1-y, column = x, sticky = "nsew") 
+        b.grid(row = height-1-x, column = y, sticky = "nsew") 
 
         buttons[(x,y)] = b
-        b.config(command = lambda x=x, y=y: onClick(x,y))
+        b.config(command = lambda x=y, y=x: onClick(y,x))
 
-  def onClick(x,y):
+  def onClick(y,x):
     print(f"Button ({x},{y}) clicked")
 
   createGrid()
