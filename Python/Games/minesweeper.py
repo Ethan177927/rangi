@@ -31,7 +31,7 @@ def minesweeper_game():
   print("To play this game, enter a difficulty level")
   print("Easy: 9x9 grid with 10 mines")
   print("Medium: 16x16 grid with 40 mines")
-  print("Hard: 20x24 grid with 99 mines")
+  print("Hard: 21x21 grid with 99 mines")
 
   while Difficulty not in options:
     Difficulty = input("Choose a difficulty (easy, medium, hard): ").lower()
@@ -41,7 +41,8 @@ def minesweeper_game():
   elif Difficulty == "medium":
     grid_size = [15,15,40,40]
   elif Difficulty == "hard":
-    grid_size = [19,23,99,99]
+    grid_size = [20,20,99,99]
+  global flags
 
   flags = grid_size[3]
   mines = grid_size[2]
@@ -64,10 +65,59 @@ def minesweeper_game():
         b.grid(row = height-1-x, column = y, sticky = "nsew") 
 
         buttons[(x,y)] = b
-        b.config(command = lambda x=y, y=x: onClick(y,x))
+        b.bind("<Button-1>", lambda event, x=x, y=y: onClick(x,y))
+        b.bind("<Button-3>", lambda event, x=x, y=y: onRightClick(x,y))
+  flagged = []
 
-  def onClick(y,x):
+  def onRightClick(x,y):
+    global flags
+    if (x,y) in revealed:
+      print("This tile has already been revealed, you cannot place a flag here.")
+    elif (x,y) in flagged:
+      print(f"Flag removed at ({x},{y})")
+      buttons[(x,y)].config(text = " ", bg = "lightgrey")
+      flagged.remove((x,y))
+      flags +=1
+    elif flags > 0:
+      print(f"Placed flag at ({x},{y})")
+      buttons[(x,y)].config(text = "F", bg = "yellow")
+      flagged.append((x,y))
+      flags -= 1
+    elif flags == 0:
+      print("No flags remaining!")
+
+  revealed = set()
+ # recursion stuff
+  def reveal(x,y):
+    if (x,y) in Mine_list or (x,y) in revealed:
+      return
+    number = surrounding.count((x,y))
+
+    display_number = number if number > 0 else ""
+    buttons[(x,y)].config(text = display_number, bg = "white")
+
+    revealed.add((x,y))
+    if number == 0:
+      surroundingtiles = [(x-1,y-1), (x,y-1), (x+1,y-1),
+                          (x-1,y),           (x+1,y),
+                          (x-1,y+1), (x,y+1), (x+1,y+1)]
+      for (a,b) in surroundingtiles:
+        if 0 <= a <= width-1 and 0 <= b <= height-1:
+          reveal(a,b)
+
+  def onClick(x,y):
     print(f"Button ({x},{y}) clicked")
+    if (x,y) in flagged:
+      print("There is a flag there, please remove it before revealing the tile.")
+      return
+    if (x,y) in Mine_list:
+      buttons[(x,y)].config(text = "X", bg = "red")
+      Game_overMS = True
+      print("You hit a mine! Game Over!")
+      return
+    reveal(x,y)
+
+
 
   createGrid()
   
@@ -120,7 +170,7 @@ def minesweeper_game():
     action = Guess[2]
     while action not in ['flag','reveal']:
       action = input("Invalid action. Please enter 'flag' or 'reveal': ")
-
+  
 
     Guess = (x,y)
     print(Guess)
