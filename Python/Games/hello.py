@@ -3,7 +3,6 @@ Difficulty = ""
 grid_size = [0,0,0,0]
 Mine_list = []
 surrounding = []
-import random
 Game_overMS = False
 import tkinter as tk
 import rpsminus1
