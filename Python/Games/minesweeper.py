@@ -8,7 +8,19 @@ def minesweeper_game():
   global width
   global height
   tkmine = tk.Tk() 
-  tkmine.title("Minesweeper")
+  tkmine.configure(bg = "#f8f8f8")
+
+
+  # Fonts
+  titlefont = ("Helvetica Neue", 30, "bold")
+  textfont = ("Helvetica Neue", 15)
+  Btnfont = ("Helvetica", 12, "bold")
+
+
+
+  titlemine = Label(tkmine, text = "Minesweeper", font = titlefont, fg = "black", bg = "#f8f8f8")
+  titlemine.pack(padx = 10, pady = 10)
+
 
   screen_width = tkmine.winfo_screenwidth()
   screen_height = tkmine.winfo_screenheight()
@@ -19,14 +31,8 @@ def minesweeper_game():
 
   # sets size of the window and the +swidth and +sheight are x,y values for where the window opens on the screen.
   tkmine.geometry(f"850x650+{swidth}+{sheight}")
-  title = Label(tkmine, text="Minesweeper", font=("Roman", 30))
-  title.pack(padx = 10, pady = 20)
-  text = Label(tkmine, text = "Left click to reveal a tile, right click to place/remove a flag.", font = ("Roman", 15))
-  text.pack(padx = 10)
 
-  flags_label = Label(tkmine, text = "Flags remaining: ", font = ("Roman", 15))
-  flags_label.pack(padx = 10, pady = 10)
-  grid_size = [0,0,0,0]
+
   Mine_list = []
   surrounding = []
   import random 
@@ -55,7 +61,14 @@ def minesweeper_game():
     easy.pack_forget()
     medium.pack_forget()
     hard.pack_forget()
-    flags_label.config(text = f"Flags remaining: {grid_size[3]}")
+    easyframe.pack_forget()
+    midframe.pack_forget()
+    hardframe.pack_forget()
+    text = Label(tkmine, text = "Left click to reveal a tile, right click to place/remove a flag.", font = textfont, bg = "#f8f8f8")
+    text.pack(padx = 10)
+
+    flags_label = Label(tkmine, text = f"Flags remaining: {flags} ", font = textfont, bg = "#f8f8f8")
+    flags_label.pack(padx = 10, pady = 10)
     for i in range(mines):
       x = random.randint(0,width-1)
       y = random.randint(0,height-1)
@@ -78,14 +91,30 @@ def minesweeper_game():
             surrounding.remove((x,y))
     createGrid()
   
-    
+  easyframe = Frame(tkmine)
+  easyframe.pack (padx = 10, pady = 10)
+  easyframe.config(bg = "#f8f8f8")
+  midframe = Frame(tkmine)
+  midframe.pack(padx = 10, pady = 10)
+  midframe.config(bg = "#f8f8f8")
 
-  easy = Button(tkmine, text = "Easy", font = ("Roman", 15), command = lambda: set_difficulty("easy"))
-  easy.pack(padx = 10, pady = 10)
-  medium = Button(tkmine, text = "Medium", font = ("Roman", 15), command = lambda: set_difficulty("medium"))
-  medium.pack(padx = 10, pady = 10)
-  hard = Button(tkmine, text = "Hard", font = ("Roman", 15), command = lambda: set_difficulty("hard"))
-  hard.pack(padx = 10, pady = 10)
+  hardframe = Frame(tkmine)
+  hardframe.pack(padx = 10, pady = 10)
+  hardframe.config(bg = "#f8f8f8")
+
+   # Difficulty Buttons
+  easy = Button(easyframe, text = "Easy", bg = "#f8f8f8", font = Btnfont, width = 6, command = lambda: set_difficulty("easy"))
+  easy.pack(padx = 10, pady = 10, side = "left")
+  easytext = Label (easyframe, text = "9x9 Grid with 10 Mines", bg = "#f8f8f8", font = textfont)
+  easytext.pack(side = "left")
+  medium = Button(midframe, text = "Medium",bg = "#f8f8f8", font = Btnfont, width = 6, command = lambda: set_difficulty("medium"))
+  medium.pack(padx = 10, pady = 10, side = "left")
+  midtext = Label(midframe, text = "16x16 Grid with 40 Mines",bg = "#f8f8f8", font = textfont )
+  midtext.pack(side = "left")
+  hard = Button(hardframe, text = "Hard",bg = "#f8f8f8", font = Btnfont, width = 6, command = lambda: set_difficulty("hard"))
+  hard.pack(padx = 10, pady = 10, side = "left")
+  hardtext = Label(hardframe, text = "21x21 Grid with 99 mines", bg = "#f8f8f8",font = textfont)
+  hardtext.pack(padx = 10, pady = 10, side = "left")
   
   buttons = {}
 
@@ -126,8 +155,19 @@ def minesweeper_game():
         print("This tile has already been revealed, you cannot place a flag here.")
       elif (x,y) in Mine_list and (x,y) in flagged:
         mines +=1         
+        print(f"Flag removed at ({x},{y})")
+        flags += 1
+        buttons[(x,y)].config(text = " ", bg = "lightgrey")
+        flagged.remove((x,y))
       elif (x,y) in Mine_list:
         mines -= 1
+        flags -=1 
+        print(f"Placed flag at ({x},{y})")
+        buttons[(x,y)].config(text = "⚑", bg = "lightgrey")
+        flagged.append((x,y))
+        if mines == 0:
+          Game_overMS = 2
+          Game_Over()
       elif (x,y) in flagged:
         print(f"Flag removed at ({x},{y})")
         buttons[(x,y)].config(text = " ", bg = "lightgrey")
