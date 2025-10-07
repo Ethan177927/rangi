@@ -9,6 +9,8 @@ player_choice = []
 button_choice = []
 options = ["rock", "paper", "scissors"]
 computer_option = []
+fcomputerchoice = 1
+
 
 def rps_game():
   rps1 = Tk()
@@ -48,7 +50,7 @@ def rps_game():
       botselect.pack(pady = 10)
       for i in range(2):
         button_choice[i].pack(padx =10, pady = 10, side = "left")
- 
+      fcomputerchoice = random.choice(computer_option)
   def pick(choice, button):
     player_choice.append(choice)
     button_choice.append(button)
@@ -76,6 +78,7 @@ def rps_game():
   scissorbtn = tk.Button(framerps, text = 'Scissors', command = lambda: pick("scissors", scissorbtn), width = 15, height = 5, font = ("Roman", 15), bg = "white", fg = "black")
   
   buttons = [rockbtn, paperbtn, scissorbtn]
+  
 
 
   rps1.mainloop()
