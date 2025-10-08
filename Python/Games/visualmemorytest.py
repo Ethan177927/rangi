@@ -43,8 +43,41 @@ def vmt():
         i -= 1
       else:
         squares.append((x,y))
-    print(squares)
+
+  def change_colours(num = 0):
+    global squares
+    if num < len(squares):
+      x,y = squares[num]
+
+      buttons[(x,y)].configure(bg = "cyan")
+      tkvmt.after(1500, lambda: buttons[(x,y)].configure(bg = "#f8f8f8"))
+      tkvmt.after(1500, lambda: change_colours(num + 1))
+
+
+
     
+  def game_over():
+    print('a')
+
+  global one
+  one = 0
+
+  def onClick(x,y):
+    global game_overvmt
+    global one
+
+    if game_overvmt == 2:
+       game_over()
+    elif (x,y) != squares[one]:
+      game_overvmt == 2
+      game_over()
+    elif (x,y) == squares[one]:
+      if one < len(squares)-1:
+        one += 1
+      print('im a genius')
+    else:
+      print('a')
+
   def createGrid():
     frame = tk.Frame(tkvmt, width =400, height = 400, cursor = 'target')
     frame.pack(fill = "both", expand = True, side = "top", padx = 20, pady = 20)
@@ -60,28 +93,18 @@ def vmt():
         b.grid(row = height-1-x, column = y, sticky = "nsew")
         buttons[(x,y)] = b
         b.bind("<Button-1>", lambda event, x=x, y=y: onClick(x,y))
-  def change_colours():
-    global squares
-    for (x,y) in squares:
-      buttons[(x,y)].configure(bg = "cyan")
-      time.sleep(0.5)
-      buttons[(x,y)].configure(bg = "gray")
 
+# lambda creates an anonymous function thing
+# had to do the num = 0 num + 1 thing or else it does all of the colours changes at once and it doesnt load colours properly
+ 
   createGrid()
   start()
+
   change_colours()
 
-  
+
   tkvmt.mainloop()
 
-
-  def onClick(x,y):
-    global game_overvmt
-    if game_overvmt == 2:
-      game_over()
-
-  def game_over():
-    print('a')
 
 
 vmt()
