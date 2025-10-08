@@ -6,6 +6,9 @@ import random
 
 def vmt():
   global sqaures
+  global height
+  global width
+
   tkvmt = tk.Tk()
   tkvmt.title("Visual Memory Test")
   global game_overvmt
@@ -26,12 +29,11 @@ def vmt():
   sheight = int(screen_height/2 - 650/2)
   tkvmt.geometry(f"850x650+{swidth}+{sheight}")  
   tkvmt.configure(bg = "#f8f8f8")
+
   title = Label(tkvmt, text="Visual Memory Test", font =  titlefont, bg = "#f8f8f8")
   title.pack(padx = 10, pady = 40)
-
   height = int(input("Height: "))
   width = int(input("Width: "))
-  
   def start():
     global squares
     squares = []
@@ -57,7 +59,11 @@ def vmt():
 
     
   def game_over():
-    print('a')
+    global game_overvmt
+    if game_overvmt == 2:
+      print('c')
+    elif game_overvmt == 3:
+      print('b')
 
   global one
   one = 0
@@ -65,6 +71,7 @@ def vmt():
   def onClick(x,y):
     global game_overvmt
     global one
+    global b 
 
     if game_overvmt == 2:
        game_over()
@@ -74,11 +81,20 @@ def vmt():
     elif (x,y) == squares[one]:
       if one < len(squares)-1:
         one += 1
-      print('im a genius')
+        print('g')
+      elif one == len(squares)-1:
+        print('g')
+        game_overvmt == 3
+        game_over()
+        
+      else:
+        print('im a genius')
     else:
       print('a')
 
   def createGrid():
+    global height
+    global width
     frame = tk.Frame(tkvmt, width =400, height = 400, cursor = 'target')
     frame.pack(fill = "both", expand = True, side = "top", padx = 20, pady = 20)
     for x in range(height):

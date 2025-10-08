@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import *
+import time
+
 
 height = -1
 def minesweeper_game():
@@ -73,23 +75,23 @@ def minesweeper_game():
     for i in range(mines):
       x = random.randint(0,width-1)
       y = random.randint(0,height-1)
-      if (x,y) in Mine_list:
-        i -= 1
-      else:
-        Mine_list.append((x,y))
-        surrounding.append((x-1,y-1))
-        surrounding.append((x,y-1))
-        surrounding.append((x+1,y-1))
-        surrounding.append((x+1,y))
-        surrounding.append((x-1,y))
-        surrounding.append((x-1,y+1))
-        surrounding.append((x,y+1))
-        surrounding.append((x+1,y+1))
-        if (x,y) in surrounding:
-          surrounding.remove((x,y))
-        for x,y in surrounding:
-          if x<0 or y<0 or x> width or y > height:
-            surrounding.remove((x,y))
+      while (x,y) in Mine_list:
+        x = random.randint(0,width-1)
+        y = random.randint(0,height-1)        
+      Mine_list.append((x,y))
+      surrounding.append((x-1,y-1))
+      surrounding.append((x,y-1))
+      surrounding.append((x+1,y-1))
+      surrounding.append((x+1,y))
+      surrounding.append((x-1,y))
+      surrounding.append((x-1,y+1))
+      surrounding.append((x,y+1))
+      surrounding.append((x+1,y+1))
+      if (x,y) in surrounding:
+        surrounding.remove((x,y))
+      for x,y in surrounding:
+        if x<0 or y<0 or x> width or y > height:
+           surrounding.remove((x,y))
     createGrid()
 
 
@@ -119,6 +121,8 @@ def minesweeper_game():
   
   buttons = {}
   def createGrid():
+    global start
+    start = time.time()
     global flags
     global mines
     global width
@@ -166,7 +170,7 @@ def minesweeper_game():
         buttons[(x,y)].config(text = "⚑", bg = "lightgrey")
         flagged.append((x,y))
         if mines == 0:
-          Game_overMS = 2
+          Game_overMS = 1
           Game_Over()
       elif (x,y) in flagged:
         print(f"Flag removed at ({x},{y})")
@@ -221,14 +225,20 @@ def minesweeper_game():
       reveal(x,y)
   def Game_Over():
     global Game_overMS
+    global end
+    global start
     if Game_overMS == 2:
       for (x,y) in Mine_list:
         buttons[(x,y)].config(text = "💥", bg = "red")
 
-    elif Game_overMS == 1:  
+    elif Game_overMS == 1:
+
+      end = time.time()
+      times = end - start
+      round(times,2)
+      print(times)
       for (x,y) in Mine_list:
-        if (x,y) not in flagged:
-          buttons[(x,y)].config(text = "💥", bg = "red")
+        buttons[(x,y)].config(text = "🌱", bg = "#8eef8c")
       print("Congratulations! You found all the mines!")
   tkmine.mainloop()
 minesweeper_game()
