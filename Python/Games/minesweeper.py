@@ -43,6 +43,9 @@ def minesweeper_game():
   flags = 0
   flags_label = Label(tkmine, text = f"Flags remaining: {flags} ", font = textfont, bg = "#f8f8f8")
   flags_label.pack(padx = 10, pady = 10)
+  global text
+  text = Label(tkmine, text = "Left click to reveal a tile, right click to place/remove a flag.", font = textfont, bg = "#f8f8f8")
+  text.pack(padx = 10)
   def set_difficulty(level):    
     global Difficulty
     global grid_size
@@ -69,8 +72,7 @@ def minesweeper_game():
     easyframe.pack_forget()
     midframe.pack_forget()
     hardframe.pack_forget()
-    text = Label(tkmine, text = "Left click to reveal a tile, right click to place/remove a flag.", font = textfont, bg = "#f8f8f8")
-    text.pack(padx = 10)
+
 
     for i in range(mines):
       x = random.randint(0,width-1)
@@ -127,6 +129,7 @@ def minesweeper_game():
     global mines
     global width
     global height
+    global frame
     frame = tk.Frame(tkmine, cursor = 'target')
     frame.pack(fill = "both", expand = True, side = "top", padx = 20, pady = 20)
     for x in range(height):
@@ -143,6 +146,7 @@ def minesweeper_game():
         buttons[(x,y)] = b
         b.bind("<Button-1>", lambda event, x=x, y=y: onClick(x,y))
         b.bind("<Button-3>", lambda event, x=x, y=y: onRightClick(x,y))
+    
   flagged = []
 
   def onRightClick(x,y):
@@ -211,6 +215,8 @@ def minesweeper_game():
 
   def onClick(x,y):
     global Game_overMS
+    text.pack_forget()
+
     if Game_overMS != 2:
       print(f"Button ({x},{y}) clicked")
       if (x,y) in flagged:
@@ -225,8 +231,10 @@ def minesweeper_game():
       reveal(x,y)
   def Game_Over():
     global Game_overMS
+    global frame
     global end
     global start
+    global text
     if Game_overMS == 2:
       for (x,y) in Mine_list:
         buttons[(x,y)].config(text = "💥", bg = "red")
@@ -235,115 +243,23 @@ def minesweeper_game():
 
       end = time.time()
       times = end - start
-      round(times,2)
+      times = round(times,2)
       print(times)
+      flags_label.config(text = f"You completed Minesweeper - Easy in {times} seconds!")
+      def yesno():
+        global text
+        flags_label.config(text = "Would you like to play again?")
+        frame.pack_forget()
+        btnsframe = Frame(tkmine)
+        btnsframe.pack()
+        Btnyes = Button(btnsframe, text = "Yes", width = 6, bg = "#f8f8f8", font = Btnfont,  command = minesweeper_game)
+        Btnyes.pack(side = "left", padx = 10, pady = 10)
+        Btnno = Button(btnsframe, text = "No", width = 6, bg = "#f8f8f8", font =  Btnfont)
+        Btnno.pack(side = "left", padx = 10, pady = 10)
       for (x,y) in Mine_list:
         buttons[(x,y)].config(text = "🌱", bg = "#8eef8c")
+      tkmine.after(5000, yesno)
+
       print("Congratulations! You found all the mines!")
   tkmine.mainloop()
 minesweeper_game()
-"""
-  for i in range(mines):
-    x = random.randint(0,width-1)
-    y = random.randint(0,height-1)
-    if (x,y) in Mine_list:
-      i -= 1
-    else:
-      Mine_list.append((x,y))
-      surrounding.append((x-1,y-1))
-      surrounding.append((x,y-1))
-      surrounding.append((x+1,y-1))
-      surrounding.append((x+1,y))
-      surrounding.append((x-1,y))
-      surrounding.append((x-1,y+1))
-      surrounding.append((x,y+1))
-      surrounding.append((x+1,y+1))
-      if (x,y) in surrounding:
-        surrounding.remove((x,y))
-      for x,y in surrounding:
-        if x<0 or y<0 or x> width or y > height:
-          surrounding.remove((x,y))
-    
-  print(Mine_list)
-  print(surrounding)
-
-  table = []
-  for i in range(height+1):
-    row = []
-    for j in range(width+1):
-      row.append(0)
-    table.append(row)
-
-  for row in table:
-    print(row)
-
-  str(j)+","+ str(height-i)
-  print("In order to select the location you want to reveal or place a flag, enter the coordinates in the format: x,y,flag/reveal")
-  print("The first 'tile' is (0,0) which is the bottom left corner of the grid. The top right corner is (" + str(width) + "," + str(height) + ")")
-  while Game_overMS == False:
-    Guess = input("Guess: ").split(",")
-    print(Guess)
-    x = int(Guess[0])
-    while x > width or x<0:
-      x = int(input("Invalid x co-ordinate. Please enter a value between 0 and "+ str(width)+ ": "))
-    y = int(Guess[1])
-    while y > height or y<0:
-      y = int(input("Invalid y co-ordinate. Please enter a value between 0 and "+ str(height)+ ": ")) 
-    action = Guess[2]
-    while action not in ['flag','reveal']:
-      action = input("Invalid action. Please enter 'flag' or 'reveal': ")
-  
-
-    Guess = (x,y)
-    print(Guess)
-    if action == 'flag':
-      if flags == 0:
-        print("You have no flags remaining!")
-        continue
-      if table[height-y][x] == 8:
-        print("There is already a flag there, it will now be removed and be added back to your flag count.")
-        flags += 1
-        if (x,y) in Mine_list:
-          table[height-y][x] = 9
-        elif (x,y) in surrounding:
-            number = surrounding.count((x,y))
-            table[height-y][x] = number
-        else:
-          table[height-y][x] = 0
-      else:
-        table[height-y][x] = 8
-        flags -= 1
-      print("Flags remaining: " + str(flags))
-      for row in table:
-        print(row)
-
-    Guess = (x,y)
-    if action == "reveal":
-      if Guess in Mine_list:
-        print("You hit a mine! Game Over!")
-        for (x,y) in Mine_list:
-          table[height-y][x] = 9
-      elif Guess in surrounding:
-        print("washed")
-        number = surrounding.count((x,y))
-        table[height-y][x] = number
-      else:
-        table[height-y][x] = 7
-        surroundingsafe = []
-        surroundingsafe.append((x-1,y-1))
-        surroundingsafe.append((x,y-1))
-        surroundingsafe.append((x+1,y-1))
-        surroundingsafe.append((x+1,y))
-        surroundingsafe.append((x-1,y))
-        surroundingsafe.append((x-1,y+1))
-        surroundingsafe.append((x,y+1))
-        surroundingsafe.append((x+1,y+1))
-        for (x,y) in surroundingsafe:
-          if x < 0 or y < 0 or x > width or y > height or (x,y) in Mine_list or (x,y) in surrounding:
-            surroundingsafe.remove((x,y))
-        for (x,y) in surroundingsafe:
-          table[height-y][x] = 7
-      for row in table:
-        print(row)
-"""
-
