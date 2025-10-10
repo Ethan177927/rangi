@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 import time
 
+timed = []
 
 height = -1
 def minesweeper_game():
@@ -14,7 +15,7 @@ def minesweeper_game():
 
 
   # Fonts
-  titlefont = ("Helvetica Neue", 30, "bold")
+  titlefont = ("Helvetica Neue", 30, "bold")  
   textfont = ("Helvetica Neue", 15)
   Btnfont = ("Helvetica", 12, "bold")
 
@@ -229,6 +230,22 @@ def minesweeper_game():
         print("You hit a mine! Game Over!")
         return
       reveal(x,y)
+  def destroy():
+    tkmine.destroy()
+  def combined():
+    destroy()
+    minesweeper_game()
+
+  def yesno():
+      global text
+      flags_label.config(text = "Would you like to play again?")
+      frame.pack_forget()
+      btnsframe = Frame(tkmine, bg = "#f8f8f8")
+      btnsframe.pack()
+      Btnyes = Button(btnsframe, text = "Yes", width = 6, bg = "#f8f8f8", font = Btnfont,  command = combined)
+      Btnyes.pack(side = "left", padx = 10, pady = 10)
+      Btnno = Button(btnsframe, text = "No", width = 6, bg = "#f8f8f8", font =  Btnfont, command = destroy )
+      Btnno.pack(side = "left", padx = 10, pady = 10)
   def Game_Over():
     global Game_overMS
     global frame
@@ -238,6 +255,8 @@ def minesweeper_game():
     if Game_overMS == 2:
       for (x,y) in Mine_list:
         buttons[(x,y)].config(text = "💥", bg = "red")
+      flags_label.config(text = f"You hit a Mine! Game Over!")
+      tkmine.after(5000,yesno)
 
     elif Game_overMS == 1:
 
@@ -246,16 +265,8 @@ def minesweeper_game():
       times = round(times,2)
       print(times)
       flags_label.config(text = f"You completed Minesweeper - Easy in {times} seconds!")
-      def yesno():
-        global text
-        flags_label.config(text = "Would you like to play again?")
-        frame.pack_forget()
-        btnsframe = Frame(tkmine)
-        btnsframe.pack()
-        Btnyes = Button(btnsframe, text = "Yes", width = 6, bg = "#f8f8f8", font = Btnfont,  command = minesweeper_game)
-        Btnyes.pack(side = "left", padx = 10, pady = 10)
-        Btnno = Button(btnsframe, text = "No", width = 6, bg = "#f8f8f8", font =  Btnfont)
-        Btnno.pack(side = "left", padx = 10, pady = 10)
+      timed.append(times)
+   
       for (x,y) in Mine_list:
         buttons[(x,y)].config(text = "🌱", bg = "#8eef8c")
       tkmine.after(5000, yesno)

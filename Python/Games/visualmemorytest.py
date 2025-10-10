@@ -34,8 +34,13 @@ def vmt():
   title.pack(padx = 10, pady = 40)
   height = int(input("Height: "))
   width = int(input("Width: "))
+
+  while height >= 10 or width >= 10:
+    print("Enter a valid height and width. Greater than 1, Less than 10")
+    height = int(input("Height: "))
+    width = int(input("Width: "))
   def start():
-    global squares
+    global squares  
     squares = []
     math = int(height*width/3)
     for i in range (math):
