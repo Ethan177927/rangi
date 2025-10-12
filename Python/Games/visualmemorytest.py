@@ -123,6 +123,4 @@ def vmt():
 
   tkvmt.mainloop()
 
-
-
 vmt()

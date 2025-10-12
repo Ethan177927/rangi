@@ -102,7 +102,6 @@ def rps_game():
 
 
   rps1.mainloop()
-
 rps_game()
 '''
     minesweep.pack(padx = 10, pady = 10, side  = "left")
