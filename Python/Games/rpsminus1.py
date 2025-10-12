@@ -1,6 +1,8 @@
 import random 
 import tkinter as tk
 from tkinter import * 
+from tkinter import PhotoImage
+
 
 
 
@@ -11,9 +13,26 @@ options = ["rock", "paper", "scissors"]
 computer_option = []
 fcomputerchoice = 1
 
-
 def rps_game():
-  rps1 = Tk()
+
+  # bg = "#f8f8f8"
+  # Fonts
+  titlefont = ("Helvetica Neue", 30, "bold")
+  textfont = ("Helvetica Neue", 15)
+  Btnfont = ("Helvetica", 12, "bold")
+
+  rps1 = tk.Tk()
+
+  '''
+  rock_img = tk.PhotoImage(file = "Images/Rock.png")
+  paper_img = tk.PhotoImage(file = "Images/Paper.png")
+  scissors_img = tk.PhotoImage(file = "Images/Scissors.png")
+  
+
+  rps1.rock_img = rock_img
+  rps1.paper_img = paper_img
+  rps1.scissors_img = scissors_img
+  '''
   screen_width = rps1.winfo_screenwidth()
   screen_height = rps1.winfo_screenheight()
 
@@ -23,9 +42,9 @@ def rps_game():
 
     # sets size of the window and the +swidth and +sheight are x,y values for where the window opens on the screen.
   rps1.geometry(f"850x650+{swidth}+{sheight}")
-  rps1.configure(bg="lightgrey")
+  rps1.configure(bg="#f8f8f8")
   rps1.title("Rock Paper Scissors Minus")
-  title = Label(rps1, text="Rock Paper Scissors Minus One", font=("Roman", 30), bg = "lightgrey")
+  title = Label(rps1, text="Rock Paper Scissors Minus One", font= titlefont, bg = "#f8f8f8")
   title.pack(padx = 10, pady = 40)
   
   
@@ -44,13 +63,14 @@ def rps_game():
           buttons[i].pack_forget()
       print("You chose: " + player_choice[0] + " and " + player_choice[1])
       print("The computer chose: " + computer_option[0] + " and " + computer_option[1])
-      removal = Label(rps1,text = "Remove One!", font = ("Roman", 20), bg = "lightgrey")
+      removal = Label(rps1,text = "Remove One!", font = textfont , bg = "#f8f8f8")
       removal.pack(pady = 10)
-      botselect = Label(rps1, text = f"The computer is choosing...  {computer_option[0]} and {computer_option[1]}", font = ("Roman", 15), bg = "lightgrey")
+      botselect = Label(rps1, text = f"The computer is choosing...  {computer_option[0]} and {computer_option[1]}", font = textfont, bg = "#f8f8f8")
       botselect.pack(pady = 10)
       for i in range(2):
         button_choice[i].pack(padx =10, pady = 10, side = "left")
       fcomputerchoice = random.choice(computer_option)
+      
   def pick(choice, button):
     player_choice.append(choice)
     button_choice.append(button)
@@ -68,14 +88,14 @@ def rps_game():
       button.pack(padx = 10, pady = 10, side = "left")
     
 
-  play_btn = tk.Button(rps1, text = 'Play', command = play, width = 25, height = 10, font = ("Roman", 20), bg = "white", fg = "black")
+  play_btn = tk.Button(rps1, text = 'Play', command = play, width = 25, height = 10, font = Btnfont, bg = "white", fg = "black")
   play_btn.pack(padx = 10, pady = 10)
-  framerps = Frame(rps1, bg = "lightgrey")
+  framerps = Frame(rps1, bg = "#f8f8f8")
   framerps.pack(pady = 20)
 
-  rockbtn = tk.Button(framerps, text = 'Rock', command=lambda: pick("rock", rockbtn), width = 15, height = 5, font = ("Roman", 15), bg = "white", fg = "black")
-  paperbtn = tk.Button(framerps, text = 'Paper', command = lambda: pick("paper", paperbtn), width = 15, height = 5, font = ("Roman", 15), bg = "white", fg = "black")
-  scissorbtn = tk.Button(framerps, text = 'Scissors', command = lambda: pick("scissors", scissorbtn), width = 15, height = 5, font = ("Roman", 15), bg = "white", fg = "black")
+  rockbtn = tk.Button(framerps, text = 'Rock', command=lambda: pick("rock", rockbtn), width = 15, height = 5, font = Btnfont, bg = "white", fg = "black")
+  paperbtn = tk.Button(framerps, text = 'Paper', command = lambda: pick("paper", paperbtn), width = 15, height = 5, font = Btnfont, bg = "white", fg = "black")
+  scissorbtn = tk.Button(framerps, text = 'Scissors', command = lambda: pick("scissors", scissorbtn), width = 15, height = 5, font = Btnfont, bg = "white", fg = "black")
   
   buttons = [rockbtn, paperbtn, scissorbtn]
   

@@ -43,13 +43,12 @@ def vmt():
     global squares  
     squares = []
     math = int(height*width/3)
-    for i in range (math):
+    while len(squares) < math:
       x = random.randint(0,width-1)
       y = random.randint(0,height-1)
-      if (x,y) in squares:
-        i -= 1
-      else:
-        squares.append((x,y))
+      pos = (x,y)
+      if pos not in squares:
+        squares.append(pos)
 
   def change_colours(num = 0):
     global squares
@@ -57,18 +56,21 @@ def vmt():
       x,y = squares[num]
 
       buttons[(x,y)].configure(bg = "cyan")
-      tkvmt.after(1500, lambda: buttons[(x,y)].configure(bg = "#f8f8f8"))
-      tkvmt.after(1500, lambda: change_colours(num + 1))
+      tkvmt.after(1000, lambda: buttons[(x,y)].configure(bg = "#f8f8f8"))
+      tkvmt.after(1200, lambda: change_colours(num + 1))
 
+  def button_break():
+    for b in buttons.values():
+      b.configure(state = "disabled")
 
-
-    
-  def game_over():
-    global game_overvmt
-    if game_overvmt == 2:
-      print('c')
-    elif game_overvmt == 3:
-      print('b')
+  def set_state(state):
+    global game_overvmt      
+    if state == 2:
+      print('Game Over! Wrong Tile')
+      button_break()
+    elif state == 3:
+      print("You found all the correct tiles")
+      button_break()
 
   global one
   one = 0
@@ -76,26 +78,21 @@ def vmt():
   def onClick(x,y):
     global game_overvmt
     global one
-    global b 
 
-    if game_overvmt == 2:
-       game_over()
-    elif (x,y) != squares[one]:
-      game_overvmt == 2
-      game_over()
+    if game_overvmt != 1:
+      return
+
+    if (x,y) != squares[one]:
+      set_state(2)
     elif (x,y) == squares[one]:
       if one < len(squares)-1:
         one += 1
         print('g')
       elif one == len(squares)-1:
-        print('g')
-        game_overvmt == 3
-        game_over()
-        
-      else:
-        print('im a genius')
+        set_state(3) 
     else:
-      print('a')
+      if (x,y) in squares:
+        buttons[(x,y)].configure(text = "X", bg = "red")
 
   def createGrid():
     global height
