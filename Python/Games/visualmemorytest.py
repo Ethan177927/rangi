@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import *
 import time
 import random
-
+a = 1
 def vmt():
   global sqaures
   global height
@@ -32,11 +32,24 @@ def vmt():
 
   title = Label(tkvmt, text="Visual Memory Test", font =  titlefont, bg = "#f8f8f8")
   title.pack(padx = 10, pady = 40)
-  height = int(input("Height: "))
-  width = int(input("Width: "))
+  height = 4
+  width = 4
 
-  while height >= 10 or width >= 10:
+
+
+
+  while height >= 10 or width >= 10 or height < 1 or width < 1:
     print("Enter a valid height and width. Greater than 1, Less than 10")
+    
+  #
+    diff = Frame(tkvmt, bg = '#f8f8f8')
+    diff.pack(padx = 10, pady = 10)
+    easydiff = Button(diff, text = "Easy Mode", bg = '#f8f8f8', font = Btnfont, command = easy)
+    easydiff.pack(padx = 10, pady = 10, side = 'left')
+    mediumdiff = Button(diff, text = "Medium Mode", bg = '#f8f8f8', font = Btnfont, command = medium)
+    mediumdiff.pack(padx = 10, pady = 10, side = 'left')
+    harddiff = Button(diff, text = "Hard Mode", bg = "#f8f8f8", font = Btnfont, command = hard)
+    harddiff.pack(padx = 10, pady = 10, side = 'left')
     height = int(input("Height: "))
     width = int(input("Width: "))
   def start():
@@ -59,16 +72,16 @@ def vmt():
       tkvmt.after(1000, lambda: buttons[(x,y)].configure(bg = "#f8f8f8"))
       tkvmt.after(1200, lambda: change_colours(num + 1))
 
-  def button_break():
-    for b in buttons.values():
-      b.configure(state = "disabled")
 
   def set_state(state):
-    global game_overvmt      
+    global game_overvmt     
+    global winloss 
     if state == 2:
+      winloss = 2
       print('Game Over! Wrong Tile')
       button_break()
     elif state == 3:
+      winloss = 3
       print("You found all the correct tiles")
       button_break()
 
@@ -97,6 +110,7 @@ def vmt():
   def createGrid():
     global height
     global width
+    global frame
     frame = tk.Frame(tkvmt, width =400, height = 400, cursor = 'target')
     frame.pack(fill = "both", expand = True, side = "top", padx = 20, pady = 20)
     for x in range(height):
@@ -111,6 +125,35 @@ def vmt():
         b.grid(row = height-1-x, column = y, sticky = "nsew")
         buttons[(x,y)] = b
         b.bind("<Button-1>", lambda event, x=x, y=y: onClick(x,y))
+  def button_break():
+    global frame
+    print('break')
+    frame.pack_forget()
+    if winloss == 2:
+      textl = Label(text = 'You lost! Would you like to play again?', font = textfont, bg = '#f8f8f8')
+    if winloss == 3:
+      textl = Label(text = 'You won! Would you like to play again?', font = textfont, bg = '#f8f8f8')
+    textl.pack()
+
+    def again():
+      tkvmt.destroy()
+      vmt()
+    btnframes474 = Frame(tkvmt, bg = '#f8f8f8')
+    btnframes474.pack(pady = 10, padx = 10)
+    btnplay = Button(btnframes474, text = 'Play Again',bg = '#f8f8f8', width = 10, font = Btnfont, command = again)
+    btnplay.pack(side = 'left', padx = 10, pady = 10)
+    def destroy():
+      tkvmt.destroy()
+      import ihatetk
+      ihatetk
+
+
+    btnquit = Button(btnframes474, text = 'Quit', font = Btnfont, width = 10,bg = '#f8f8f8', command = destroy)
+
+    btnquit.pack(side = 'left', padx = 10, pady = 10)
+
+
+ #tkmine.destroy()
 
 # lambda creates an anonymous function thing
 # had to do the num = 0 num + 1 thing or else it does all of the colours changes at once and it doesnt load colours properly
@@ -122,5 +165,5 @@ def vmt():
 
 
   tkvmt.mainloop()
-
-vmt()
+if a == 1:
+  vmt()

@@ -47,7 +47,7 @@ def tk_window():
         hidden_label.config(text = 'Username saved!', fg = "green")
         tkmain.after(2000, hide_username)
       else:
-        print("a")
+        print("Invalid Username.")
         hidden_label.config(text = 'Invalid Input or Username exists.')
 
       
@@ -73,6 +73,7 @@ def tk_window():
     print("Minesweeper opening...")
     import minesweeper
     minesweeper
+
   def rpsgame():
     print("Rock Paper Scissors opening...")
     import rpsminus1
