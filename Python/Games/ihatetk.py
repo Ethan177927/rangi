@@ -38,6 +38,7 @@ def tk_window():
   hidden_label.pack()
   name_label.pack(padx = 10, pady = 10)
   name_entry.pack(padx = 10, pady = 10)
+  global name
   def submit():
     name = name_var.get()
     print(name)
@@ -72,16 +73,19 @@ def tk_window():
   def minesweepers():
     print("Minesweeper opening...")
     import minesweeper
-    minesweeper
+    tkmain.destroy()
+    minesweeper.minesweeper_game()
 
   def rpsgame():
     print("Rock Paper Scissors opening...")
     import rpsminus1
-    rpsminus1
+    tkmain.destroy()
+    rpsminus1.rps_game()
   def vmt():
     print("visual Memory Test opening...")
     import visualmemorytest
-    visualmemorytest
+    tkmain.destroy()
+    visualmemorytest.vmt()
   row_frame = Frame(tkmain, bg = '#f8f8f8')
   row_frame.pack(pady = 10)
 
@@ -93,4 +97,5 @@ def tk_window():
 
 
   tkmain.mainloop()
+
 tk_window()

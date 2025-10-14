@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
 import time
-
+import subprocess
 timed = []
 
 height = -1
@@ -44,15 +44,22 @@ def minesweeper_game():
   flags = 0
   flags_label = Label(tkmine, text = f"Flags remaining: {flags} ", font = textfont, bg = "#f8f8f8")
   flags_label.pack(padx = 10, pady = 10)
+  def BackMenus():
+    tkmine.destroy()
+    subprocess.run(["python", r"Python\Games\ihatetk.py"])
+  
+  BackMenu = Button(tkmine, text = "Back To Menu", bg = "#f8f8f8", font = Btnfont, command = BackMenus)
+  BackMenu.pack(padx = 10, pady = 10, side = "bottom", anchor = 'w')
+
   global text
-  text = Label(tkmine, text = "Left click to reveal a tile, right click to place/remove a flag.", font = textfont, bg = "#f8f8f8")
+  text = Label(tkmine, text = f"Left click to reveal a tile, right click to place/remove a flag.", font = textfont, bg = "#f8f8f8")
   text.pack(padx = 10)
   def set_difficulty(level):    
     global Difficulty
     global grid_size
     global flags
     global mines
-    global width
+    global width    
     global height
     Difficulty = level
     if Difficulty == "easy":
@@ -131,7 +138,7 @@ def minesweeper_game():
     global width
     global height
     global frame
-    frame = tk.Frame(tkmine, cursor = 'target')
+    frame = tk.Frame(tkmine, cursor = 'target', height = 5, width = 5)
     frame.pack(fill = "both", expand = True, side = "top", padx = 20, pady = 20)
     for x in range(height):
       frame.grid_rowconfigure(x, weight = 1, uniform = "row")
@@ -141,7 +148,7 @@ def minesweeper_game():
 
     for x in range (height):
       for y in range (width):
-        b = Button(frame, text = " ", bg = "lightgrey", fg = "black")
+        b = Button(frame, text = " ", bg = "lightgrey", fg = "black", height = 2, width = 4, font = Btnfont)
         b.grid(row = height-1-x, column = y, sticky = "nsew") 
 
         buttons[(x,y)] = b
@@ -273,4 +280,3 @@ def minesweeper_game():
 
       print("Congratulations! You found all the mines!")
   tkmine.mainloop()
-minesweeper_game()

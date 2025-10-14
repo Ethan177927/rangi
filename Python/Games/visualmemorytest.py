@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import *
 import time
 import random
-a = 1
+import subprocess
 def vmt():
   global sqaures
   global height
@@ -35,13 +35,18 @@ def vmt():
   height = 4
   width = 4
 
-
+  def BackMenus():
+    tkvmt.destroy()
+    subprocess.run(["python", r"Python\Games\ihatetk.py"])
+  
+  BackMenu = Button(tkvmt, text = "Back To Menu", bg = "#f8f8f8", font = Btnfont, command = BackMenus)  
+  BackMenu.pack(padx = 10, pady = 10, side = "bottom", anchor = 'w')
 
 
   while height >= 10 or width >= 10 or height < 1 or width < 1:
     print("Enter a valid height and width. Greater than 1, Less than 10")
     
-  #
+  '''
     diff = Frame(tkvmt, bg = '#f8f8f8')
     diff.pack(padx = 10, pady = 10)
     easydiff = Button(diff, text = "Easy Mode", bg = '#f8f8f8', font = Btnfont, command = easy)
@@ -52,6 +57,8 @@ def vmt():
     harddiff.pack(padx = 10, pady = 10, side = 'left')
     height = int(input("Height: "))
     width = int(input("Width: "))
+
+  '''
   def start():
     global squares  
     squares = []
@@ -130,9 +137,9 @@ def vmt():
     print('break')
     frame.pack_forget()
     if winloss == 2:
-      textl = Label(text = 'You lost! Would you like to play again?', font = textfont, bg = '#f8f8f8')
+      textl = Label(tkvmt, text = 'You lost! Would you like to play again?', font = textfont, bg = '#f8f8f8')
     if winloss == 3:
-      textl = Label(text = 'You won! Would you like to play again?', font = textfont, bg = '#f8f8f8')
+      textl = Label(tkvmt, text = 'You won! Would you like to play again?', font = textfont, bg = '#f8f8f8')
     textl.pack()
 
     def again():
@@ -165,5 +172,4 @@ def vmt():
 
 
   tkvmt.mainloop()
-if a == 1:
-  vmt()
+

@@ -1,8 +1,7 @@
 import random 
 import tkinter as tk
 from tkinter import * 
-from tkinter import PhotoImage
-
+import subprocess
 
 
 
@@ -46,7 +45,12 @@ def rps_game():
   rps1.title("Rock Paper Scissors Minus")
   title = Label(rps1, text="Rock Paper Scissors Minus One", font= titlefont, bg = "#f8f8f8")
   title.pack(padx = 10, pady = 40)
+  def BackMenus():
+    rps1.destroy()
+    subprocess.run(["python", r"Python\Games\ihatetk.py"])
   
+  BackMenu = Button(rps1, text = "Back To Menu", bg = "#f8f8f8", font = Btnfont, command = BackMenus)  
+  BackMenu.pack(padx = 10, pady = 10, side = "bottom", anchor = 'w')
   
   computer_option.append(random.choice(options))
   computer_option.append(random.choice(options))
@@ -102,7 +106,6 @@ def rps_game():
 
 
   rps1.mainloop()
-rps_game()
 '''
     minesweep.pack(padx = 10, pady = 10, side  = "left")
     rps.pack(padx = 10, pady = 10, side = "left")  
