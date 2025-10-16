@@ -49,8 +49,6 @@ def vmt():
         font=Btnfont,
         command=backMenus)
     BackMenu.pack(padx=10, pady=10, side="bottom", anchor='w')
-    height = 0
-    width = 0
 
 
     
@@ -62,6 +60,7 @@ def vmt():
         height = 4
         width = 4
         diff.pack_forget()
+        start()
         createGrid()
 
     def medium():
@@ -70,6 +69,7 @@ def vmt():
         height = 6
         width = 6
         diff.pack_forget()
+        start()
         createGrid()
 
     def hard():
@@ -78,6 +78,7 @@ def vmt():
         height = 8
         width = 8
         diff.pack_forget()
+        start()
         createGrid()
 
     easydiff = Button(diff, text = "Easy Mode", bg = '#f8f8f8', font = Btnfont, command = easy)
@@ -96,17 +97,7 @@ def vmt():
             x = random.randint(0, width - 1)
             y = random.randint(0, height - 1)
             pos = (x, y)
-            if pos not in squares:
-                squares.append(pos)
-
-    def change_colours(num=0):
-        global squares
-        if num < len(squares):
-            x, y = squares[num]
-
-            buttons[(x, y)].configure(bg="cyan")
-            tkvmt.after(1000, lambda: buttons[(x, y)].configure(bg="#f8f8f8"))
-            tkvmt.after(1200, lambda: change_colours(num + 1))
+            squares.append(pos)
 
     def set_state(state):
         global game_overvmt
@@ -126,6 +117,7 @@ def vmt():
     def onClick(x, y):
         global game_overvmt
         global one
+        
 
         if game_overvmt != 1:
             return
@@ -141,6 +133,7 @@ def vmt():
         else:
             if (x, y) in squares:
                 buttons[(x, y)].configure(text="X", bg="red")
+                
 
     def createGrid():
         global height
@@ -161,11 +154,22 @@ def vmt():
                     text=" ",
                     font=Btnfont,
                     bg="#f8f8f8",
-                    fg="black")
-                b.grid(row=height - 1 - x, column=y, sticky="nsew")
+                    fg="black",
+                    )
+                b.grid(row=height - 1 - x, column=y, sticky="nsew") 
                 buttons[(x, y)] = b
                 b.bind("<Button-1>", lambda event, x=x, y=y: onClick(x, y))
+
         change_colours()
+
+    def change_colours(num=0):
+        global squares
+        if num < len(squares):
+            x, y = squares[num]
+
+            buttons[(x, y)].configure(bg="cyan")
+            tkvmt.after(1000, lambda: buttons[(x, y)].configure(bg="#f8f8f8"))
+            tkvmt.after(1200, lambda: change_colours(num + 1))
 
     def button_break():
         global frame
@@ -213,15 +217,12 @@ def vmt():
             command=destroy)
 
         btnquit.pack(side='left', padx=10, pady=10)
-
    # tkmine.destroy()
 
 # lambda creates an anonymous function thing
 # had to do the num = 0 num + 1 thing or else it does all of the colours
 # changes at once and it doesnt load colours properly
 
-    start()
 
 
     tkvmt.mainloop()
-vmt()

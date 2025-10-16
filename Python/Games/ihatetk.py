@@ -3,16 +3,12 @@
 
 import tkinter as tk
 from tkinter import *
-  
-'''
-py -m pip install autopep8
-'''
+import subprocess
 
 # Fonts
 titlefont = ("Helvetica Neue", 30, "bold")
 textfont = ("Helvetica Neue", 15)
 Btnfont = ("Helvetica", 12, "bold")
-
 
 def tk_window():
     tkmain = tk.Tk()
