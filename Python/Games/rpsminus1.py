@@ -1,9 +1,7 @@
-import random 
+import random
 import tkinter as tk
-from tkinter import * 
+from tkinter import *
 import subprocess
-
-
 
 
 player_choice = []
@@ -12,110 +10,176 @@ options = ["rock", "paper", "scissors"]
 computer_option = []
 fcomputerchoice = 1
 
+
 def rps_game():
 
-  # bg = "#f8f8f8"
-  # Fonts
-  titlefont = ("Helvetica Neue", 30, "bold")
-  textfont = ("Helvetica Neue", 15)
-  Btnfont = ("Helvetica", 12, "bold")
+    # bg = "#f8f8f8"
+    # Fonts
+    titlefont = ("Helvetica Neue", 30, "bold")
+    textfont = ("Helvetica Neue", 15)
+    Btnfont = ("Helvetica", 12, "bold")
 
-  rps1 = tk.Tk()
+    rps1 = tk.Tk()
 
-  '''
+    '''
   rock_img = tk.PhotoImage(file = "Images/Rock.png")
   paper_img = tk.PhotoImage(file = "Images/Paper.png")
   scissors_img = tk.PhotoImage(file = "Images/Scissors.png")
-  
+
 
   rps1.rock_img = rock_img
   rps1.paper_img = paper_img
   rps1.scissors_img = scissors_img
   '''
-  screen_width = rps1.winfo_screenwidth()
-  screen_height = rps1.winfo_screenheight()
+    screen_width = rps1.winfo_screenwidth()
+    screen_height = rps1.winfo_screenheight()
 
-    # found off of google to get the screenheigth and width of the user's screen.
-  swidth = int(screen_width/2 - 850/2)
-  sheight = int(screen_height/2 - 650/2)
+    # found off of google to get the screenheigth and width of the user's
+    # screen.
+    swidth = int(screen_width / 2 - 850 / 2)
+    sheight = int(screen_height / 2 - 650 / 2)
 
-    # sets size of the window and the +swidth and +sheight are x,y values for where the window opens on the screen.
-  rps1.geometry(f"850x650+{swidth}+{sheight}")
-  rps1.configure(bg="#f8f8f8")
-  rps1.title("Rock Paper Scissors Minus")
-  title = Label(rps1, text="Rock Paper Scissors Minus One", font= titlefont, bg = "#f8f8f8")
-  title.pack(padx = 10, pady = 40)
-  def BackMenus():
-    rps1.destroy()
-    subprocess.run(["python", r"Python\Games\ihatetk.py"])
-  
-  BackMenu = Button(rps1, text = "Back To Menu", bg = "#f8f8f8", font = Btnfont, command = BackMenus)  
-  BackMenu.pack(padx = 10, pady = 10, side = "bottom", anchor = 'w')
-  
-  computer_option.append(random.choice(options))
-  computer_option.append(random.choice(options))
-  if computer_option[0] == computer_option[1]:
-    while computer_option[0] == computer_option[1]:
-      computer_option[1] = random.choice(options)
+    # sets size of the window and the +swidth and +sheight are x,y values for
+    # where the window opens on the screen.
+    rps1.geometry(f"850x650+{swidth}+{sheight}")
+    rps1.configure(bg="#f8f8f8")
+    rps1.title("Rock Paper Scissors Minus")
+    title = Label(
+        rps1,
+        text="Rock Paper Scissors Minus One",
+        font=titlefont,
+        bg="#f8f8f8")
+    title.pack(padx=10, pady=40)
 
-  def check():
-    if len(player_choice) == 2:
-      for i in range(3):
-        if options[i] in player_choice:
-          pass
-        else:
-          buttons[i].pack_forget()
-      print("You chose: " + player_choice[0] + " and " + player_choice[1])
-      print("The computer chose: " + computer_option[0] + " and " + computer_option[1])
-      removal = Label(rps1,text = "Remove One!", font = textfont , bg = "#f8f8f8")
-      removal.pack(pady = 10)
-      botselect = Label(rps1, text = f"The computer is choosing...  {computer_option[0]} and {computer_option[1]}", font = textfont, bg = "#f8f8f8")
-      botselect.pack(pady = 10)
-      for i in range(2):
-        button_choice[i].pack(padx =10, pady = 10, side = "left")
-      fcomputerchoice = random.choice(computer_option)
-      
-  def pick(choice, button):
-    player_choice.append(choice)
-    button_choice.append(button)
-    print(choice)
-    button.pack_forget()
-    check()
+    def BackMenus():
+        rps1.destroy()
+        subprocess.run(["python", r"Python\Games\ihatetk.py"])
+
+    BackMenu = Button(
+        rps1,
+        text="Back To Menu",
+        bg="#f8f8f8",
+        font=Btnfont,
+        command=BackMenus)
+    BackMenu.pack(padx=10, pady=10, side="bottom", anchor='w')
+
+    computer_option.append(random.choice(options))
+    computer_option.append(random.choice(options))
+    if computer_option[0] == computer_option[1]:
+        while computer_option[0] == computer_option[1]:
+            computer_option[1] = random.choice(options)
+
+    def check():
+        if len(player_choice) == 2:
+            for i in range(3):
+                if options[i] in player_choice:
+                    pass
+                else:
+                    buttons[i].pack_forget()
+            print(
+                "You chose: " +
+                player_choice[0] +
+                " and " +
+                player_choice[1])
+            print(
+                "The computer chose: " +
+                computer_option[0] +
+                " and " +
+                computer_option[1])
+            removal = Label(
+                rps1,
+                text="Remove One!",
+                font=textfont,
+                bg="#f8f8f8")
+            removal.pack(pady=10)
+            botselect = Label(
+                rps1,
+                text=f"The computer is choosing...  {
+                    computer_option[0]} and {
+                    computer_option[1]}",
+                font=textfont,
+                bg="#f8f8f8")
+            botselect.pack(pady=10)
+            for i in range(2):
+                button_choice[i].pack(padx=10, pady=10, side="left")
+            fcomputerchoice = random.choice(computer_option)
+
+    def pick(choice, button):
+        player_choice.append(choice)
+        button_choice.append(button)
+        print(choice)
+        button.pack_forget()
+        check()
+
+    def play():
+        print("Playing RPS-1")
+        play_btn.pack_forget()
+        player_choice.clear()
+        for button in buttons:
+            button.pack(padx=10, pady=10, side="left")
+
+    play_btn = tk.Button(
+        rps1,
+        text='Play',
+        command=play,
+        width=25,
+        height=10,
+        font=Btnfont,
+        bg="white",
+        fg="black")
+    play_btn.pack(padx=10, pady=10)
+    framerps = Frame(rps1, bg="#f8f8f8")
+    framerps.pack(pady=20)
+
+    rockbtn = tk.Button(
+        framerps,
+        text='Rock',
+        command=lambda: pick(
+            "rock",
+            rockbtn),
+        width=15,
+        height=5,
+        font=Btnfont,
+        bg="white",
+        fg="black")
+    paperbtn = tk.Button(
+        framerps,
+        text='Paper',
+        command=lambda: pick(
+            "paper",
+            paperbtn),
+        width=15,
+        height=5,
+        font=Btnfont,
+        bg="white",
+        fg="black")
+    scissorbtn = tk.Button(
+        framerps,
+        text='Scissors',
+        command=lambda: pick(
+            "scissors",
+            scissorbtn),
+        width=15,
+        height=5,
+        font=Btnfont,
+        bg="white",
+        fg="black")
+
+    buttons = [rockbtn, paperbtn, scissorbtn]
+
+    rps1.mainloop()
 
 
-
-  def play():
-    print("Playing RPS-1")
-    play_btn.pack_forget()
-    player_choice.clear()
-    for button in buttons:
-      button.pack(padx = 10, pady = 10, side = "left")
-    
-
-  play_btn = tk.Button(rps1, text = 'Play', command = play, width = 25, height = 10, font = Btnfont, bg = "white", fg = "black")
-  play_btn.pack(padx = 10, pady = 10)
-  framerps = Frame(rps1, bg = "#f8f8f8")
-  framerps.pack(pady = 20)
-
-  rockbtn = tk.Button(framerps, text = 'Rock', command=lambda: pick("rock", rockbtn), width = 15, height = 5, font = Btnfont, bg = "white", fg = "black")
-  paperbtn = tk.Button(framerps, text = 'Paper', command = lambda: pick("paper", paperbtn), width = 15, height = 5, font = Btnfont, bg = "white", fg = "black")
-  scissorbtn = tk.Button(framerps, text = 'Scissors', command = lambda: pick("scissors", scissorbtn), width = 15, height = 5, font = Btnfont, bg = "white", fg = "black")
-  
-  buttons = [rockbtn, paperbtn, scissorbtn]
-  
-
-
-  rps1.mainloop()
 '''
     minesweep.pack(padx = 10, pady = 10, side  = "left")
-    rps.pack(padx = 10, pady = 10, side = "left")  
+    rps.pack(padx = 10, pady = 10, side = "left")
     vmt.pack(padx = 10, pady = 10, side = "left")
     leaderboard.pack(padx = 10, pady = 20)
 
 
 
 
-    
+
 
   def minesweeper():
     print("Minesweeper opening...")
@@ -126,7 +190,7 @@ def rps_game():
   row_frame = Frame(tkmain)
   row_frame.pack(pady = 10)
 
-  minesweep = tk.Button(row_frame, text="Minesweeper", font=("Roman", 20), bg = "white", fg = "black", width = 20, height = 3, command = minesweeper)  
+  minesweep = tk.Button(row_frame, text="Minesweeper", font=("Roman", 20), bg = "white", fg = "black", width = 20, height = 3, command = minesweeper)
   rps = tk.Button(row_frame, text="Rock Paper Scissors", font=("Roman", 20), bg = "white", fg = "black", width = 20, height = 3, command = rps)
   vmt = tk.Button(row_frame, text="Visual Memory Test", font=("Roman", 20), bg = "white", fg = "black", width = 20, height = 3, command = vmt)
 
@@ -153,7 +217,7 @@ def rps_game():
       while second_option not in options:
           second_option = input("Invalid input. Please enter rock, paper or scissors: ").lower()
       player_choice.append(second_option)
-      
+
       computer_option = []
       computer_option.append(random.choice(options))
       computer_option.append(random.choice(options))
