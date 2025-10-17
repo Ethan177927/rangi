@@ -158,10 +158,12 @@ def vmt():
                     )
                 b.grid(row=height - 1 - x, column=y, sticky="nsew") 
                 buttons[(x, y)] = b
-                b.bind("<Button-1>", lambda event, x=x, y=y: onClick(x, y))
+                b.config(state = "disabled")
 
+        tkvmt.after(1000, delay)
+       
+    def delay():
         change_colours()
-
     def change_colours(num=0):
         global squares
         if num < len(squares):
@@ -170,6 +172,14 @@ def vmt():
             buttons[(x, y)].configure(bg="cyan")
             tkvmt.after(1000, lambda: buttons[(x, y)].configure(bg="#f8f8f8"))
             tkvmt.after(1200, lambda: change_colours(num + 1))
+        else:
+            for button in buttons.values():
+                button.config(state="normal")
+            for x in range(height):
+                for y in range(width):
+                    b = buttons[(x, y)]    
+                    b.bind("<Button-1>", lambda event, x=x, y=y: onClick(x, y))
+
 
     def button_break():
         global frame
@@ -226,3 +236,4 @@ def vmt():
 
 
     tkvmt.mainloop()
+vmt()
