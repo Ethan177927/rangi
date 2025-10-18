@@ -5,11 +5,11 @@ import time
 import random
 import subprocess
 
-
 def vmt():
     global sqaures
     global height
     global width
+
 
     tkvmt = tk.Tk()
     tkvmt.title("Visual Memory Test")
@@ -57,30 +57,47 @@ def vmt():
     def easy():
         global height
         global width
+        global timeto
+        global starttime
         height = 4
         width = 4
+        timeto = 20
+        starttime = timeto
         diff.pack_forget()
         start()
         createGrid()
 
+
     def medium():
         global height
+        global starttime
         global width
+        global timeto
         height = 6
         width = 6
+        timeto = 30
+        starttime = timeto
         diff.pack_forget()
         start()
         createGrid()
+
 
     def hard():
         global height
         global width
+        global starttime
+        global timeto
         height = 8
         width = 8
+        timeto = 60
+        starttime = timeto
         diff.pack_forget()
         start()
         createGrid()
 
+
+
+        
     easydiff = Button(diff, text = "Easy Mode", bg = '#f8f8f8', font = Btnfont, command = easy)
     easydiff.pack(padx = 10, pady = 10, side = 'left')
     mediumdiff = Button(diff, text = "Medium Mode", bg = '#f8f8f8', font = Btnfont, command = medium)
@@ -104,19 +121,43 @@ def vmt():
         global winloss
         if state == 2:
             winloss = 2
-            print('Game Over! Wrong Tile')
+            game_overvmt = 0
+            print(winloss)
             button_break()
         elif state == 3:
             winloss = 3
-            print("You found all the correct tiles")
+            game_overvmt = 0
             button_break()
 
     global one
     one = 0
+    def countdown(timeto):
+        global current_time
+        current_time = timeto
+        print(current_time)
+        time_label = Label(text = f"Time Remaining: {timeto} seconds", font = textfont, bg = '#f8f8f8')
+        time_label.pack()
+        def count():
+            nonlocal timeto
+            global current_time
+            current_time = timeto
 
+            if game_overvmt != 1:
+                time_label.pack_forget()
+                return
+            elif timeto > 0:
+                timeto -= 1
+                time_label.config(text = f"Time Remaining: {timeto} seconds")
+                time_label.after(1000, count)
+            
+            else:
+                set_state(2)
+                time_label.pack_forget()
+        count()
     def onClick(x, y):
         global game_overvmt
         global one
+        global finish
         
 
         if game_overvmt != 1:
@@ -129,6 +170,8 @@ def vmt():
                 one += 1
                 print('g')
             elif one == len(squares) - 1:
+                finish = starttime - current_time
+
                 set_state(3)
         else:
             if (x, y) in squares:
@@ -139,8 +182,9 @@ def vmt():
         global height
         global width
         global frame
-        frame = tk.Frame(tkvmt, width=400, height=400, cursor='target')
-        frame.pack(fill="both", expand=True, side="top", padx=20, pady=20)
+        frame = tk.Frame(tkvmt, width=1000, height=1000, cursor='target')
+        frame.pack(side="top", padx=20, pady=20)
+        frame.pack_propagate(False) 
         for x in range(height):
             frame.grid_rowconfigure(x, weight=1, uniform="row")
 
@@ -155,6 +199,8 @@ def vmt():
                     font=Btnfont,
                     bg="#f8f8f8",
                     fg="black",
+                    height = 20,
+                    width = 20
                     )
                 b.grid(row=height - 1 - x, column=y, sticky="nsew") 
                 buttons[(x, y)] = b
@@ -164,6 +210,7 @@ def vmt():
        
     def delay():
         change_colours()
+
     def change_colours(num=0):
         global squares
         if num < len(squares):
@@ -179,11 +226,13 @@ def vmt():
                 for y in range(width):
                     b = buttons[(x, y)]    
                     b.bind("<Button-1>", lambda event, x=x, y=y: onClick(x, y))
+            countdown(timeto)
 
 
     def button_break():
         global frame
         print('break')
+        print(winloss)
         frame.pack_forget()
         if winloss == 2:
             textl = Label(
@@ -191,13 +240,25 @@ def vmt():
                 text='You lost! Would you like to play again?',
                 font=textfont,
                 bg='#f8f8f8')
-        if winloss == 3:
+        elif winloss == 3:
+            
             textl = Label(
                 tkvmt,
                 text='You won! Would you like to play again?',
                 font=textfont,
                 bg='#f8f8f8')
-        textl.pack()
+            if finish > 1:
+                text2 = Label(tkvmt, text = f'You took {finish} seconds to complete the game!', font = textfont, bg = '#f8f8f8')
+            else:
+                text2 = Label(tkvmt, text = f'You took {finish} second to complete the game!', font = textfont, bg = '#f8f8f8')
+            text2.pack(pady = 10, padx = 10)
+        else:
+            textl = Label(
+                tkvmt,
+                text = "Unknown Error Occured.",
+                font=textfont,
+                bg='#f8f8f8')
+        textl.pack(padx = 10, pady = 10)
 
         def again():
             tkvmt.destroy()
@@ -237,3 +298,20 @@ def vmt():
 
     tkvmt.mainloop()
 vmt()
+
+"""
+with open("usernames.txt", "a") as f:
+            if name != "" and name not in open("usernames.txt").read():
+                f.write(name + "\n")
+                hidden_label.config(text='Username saved!', fg="green")
+                tkmain.after(2000, hide_username)
+            else:
+                print("Invalid Username.")
+                hidden_label.config(text='Invalid Input or Username exists.')
+                
+                """
+finish = 3
+with open("leaderboardvmt.txt", "a") as f:
+        username = open("usernames.txt").read().strip().splitlines()[-1]
+        if username not in open("leaderboardvmt.txt").read():
+            f.write(f"{username}: {finish} seconds\n")
