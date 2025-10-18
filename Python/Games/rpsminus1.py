@@ -9,10 +9,11 @@ button_choice = []
 options = ["rock", "paper", "scissors"]
 computer_option = []
 fcomputerchoice = 1
+rpsstreak = 0
 
 
 def rps_game():
-
+    global rpsstreak
     # bg = "#f8f8f8"
     # Fonts
     titlefont = ("Helvetica Neue", 30, "bold")
@@ -21,16 +22,6 @@ def rps_game():
 
     rps1 = tk.Tk()
 
-    '''
-  rock_img = tk.PhotoImage(file = "Images/Rock.png")
-  paper_img = tk.PhotoImage(file = "Images/Paper.png")
-  scissors_img = tk.PhotoImage(file = "Images/Scissors.png")
-
-
-  rps1.rock_img = rock_img
-  rps1.paper_img = paper_img
-  rps1.scissors_img = scissors_img
-  '''
     screen_width = rps1.winfo_screenwidth()
     screen_height = rps1.winfo_screenheight()
 
@@ -62,14 +53,50 @@ def rps_game():
         font=Btnfont,
         command=BackMenus)
     BackMenu.pack(padx=10, pady=10, side="bottom", anchor='w')
+    result = Label(rps1, text="", font=textfont, bg="#f8f8f8")
+    result.pack(pady=10)
+    streaklabel = Label(
+        rps1,
+        text=f"Current Win Streak: {rpsstreak}",
+        font=textfont,
+        bg="#f8f8f8")
+    streaklabel.pack(pady=10)
 
-    computer_option.append(random.choice(options))
-    computer_option.append(random.choice(options))
-    if computer_option[0] == computer_option[1]:
-        while computer_option[0] == computer_option[1]:
-            computer_option[1] = random.choice(options)
+    def reset_game():
+
+        player_choice.clear()
+        botselect.destroy()
+        removal.destroy()
+        button_choice.clear()
+        remove_frame.destroy()
+        computer_option.clear()
+        result.config(text="")
+        
+        for button in buttons:
+            button.pack_forget()
+        play_btn.pack(padx=10, pady=10)
+
+    def determine(player_final, computer_final):
+        win_cond = {"rock": "scissors",
+                    "scissors": "paper",
+                    "paper": "rock"}
+        global rpsstreak
+        if player_final == computer_final:
+            result.config(text="It's a Tie!")
+        elif win_cond[player_final] == computer_final:
+            result.config(text="You Win!")
+            rpsstreak += 1
+        else:
+            result.config(text="You Lose!")
+            rpsstreak = 0
+        streaklabel.config(text=f"Current Win Streak: {rpsstreak}")
+        rps1.after(2000, reset_game)
 
     def check():
+        global fcomputerchoice
+        global remove_frame
+        global botselect
+        global removal
         if len(player_choice) == 2:
             for i in range(3):
                 if options[i] in player_choice:
@@ -95,13 +122,25 @@ def rps_game():
             botselect = Label(
                 rps1,
                 text=f"The computer is choosing...  {
-                    computer_option[0]} and {
+                    computer_option[0]} or {
                     computer_option[1]}",
                 font=textfont,
                 bg="#f8f8f8")
             botselect.pack(pady=10)
-            for i in range(2):
-                button_choice[i].pack(padx=10, pady=10, side="left")
+            framerps.pack_forget()
+            remove_frame = Frame(rps1, bg="#f8f8f8")
+            remove_frame.pack(pady=10)
+            for choice in list(player_choice):
+                btn = tk.Button(
+                    remove_frame,
+                    text=f"Remove {choice.capitalize()}",
+                    command=lambda c=choice: player_remove(c),
+                    width=20,
+                    height=5,
+                    font=Btnfont,
+                    bg="white",
+                    fg="black")
+                btn.pack(padx=10, pady=10, side="left")
             fcomputerchoice = random.choice(computer_option)
 
     def pick(choice, button):
@@ -115,8 +154,31 @@ def rps_game():
         print("Playing RPS-1")
         play_btn.pack_forget()
         player_choice.clear()
+        button_choice.clear()
+        computer_option.clear()
+        global framerps
+        try:
+            frame_rps.destroy()
+        except:
+            pass
+        framerps = Frame(rps1, bg="#f8f8f8")
+        framerps.pack(pady=20)
+    
         for button in buttons:
             button.pack(padx=10, pady=10, side="left")
+        
+        computer_option.append(random.choice(options))
+        computer_option.append(random.choice(options))
+        if computer_option[0] == computer_option[1]:
+            while computer_option[0] == computer_option[1]:
+                computer_option[1] = random.choice(options)
+
+    def player_remove(choice):
+        for btn in button_choice:
+            btn.pack_forget()
+        player_choice.remove(choice)
+        final_player = player_choice[0]
+        determine(final_player, fcomputerchoice)
 
     play_btn = tk.Button(
         rps1,
@@ -130,7 +192,6 @@ def rps_game():
     play_btn.pack(padx=10, pady=10)
     framerps = Frame(rps1, bg="#f8f8f8")
     framerps.pack(pady=20)
-
     rockbtn = tk.Button(
         framerps,
         text='Rock',
@@ -170,96 +231,4 @@ def rps_game():
     rps1.mainloop()
 
 
-'''
-    minesweep.pack(padx = 10, pady = 10, side  = "left")
-    rps.pack(padx = 10, pady = 10, side = "left")
-    vmt.pack(padx = 10, pady = 10, side = "left")
-    leaderboard.pack(padx = 10, pady = 20)
-
-
-
-
-
-
-  def minesweeper():
-    print("Minesweeper opening...")
-  def rps():
-    print("Rock Paper Scissors opening...")
-  def vmt():
-    print("visual Memory Test opening...")
-  row_frame = Frame(tkmain)
-  row_frame.pack(pady = 10)
-
-  minesweep = tk.Button(row_frame, text="Minesweeper", font=("Roman", 20), bg = "white", fg = "black", width = 20, height = 3, command = minesweeper)
-  rps = tk.Button(row_frame, text="Rock Paper Scissors", font=("Roman", 20), bg = "white", fg = "black", width = 20, height = 3, command = rps)
-  vmt = tk.Button(row_frame, text="Visual Memory Test", font=("Roman", 20), bg = "white", fg = "black", width = 20, height = 3, command = vmt)
-
-
-
-
-
-
-
-
-
-  rps_scores = {}
-  rpscontinue = True
-  player_choice = []
-  options = ["rock", "paper", "scissors"]
-  rps_streak = 0
-  while rpscontinue == True:
-      first_option = input("Enter your choice: ").lower()
-      while first_option not in options:
-          first_option = input("Invalid input. Please enter rock, paper or scissors: ").lower()
-      player_choice.append(first_option)
-
-      second_option = input("Enter your second choice: ").lower()
-      while second_option not in options:
-          second_option = input("Invalid input. Please enter rock, paper or scissors: ").lower()
-      player_choice.append(second_option)
-
-      computer_option = []
-      computer_option.append(random.choice(options))
-      computer_option.append(random.choice(options))
-      if computer_option[0] == computer_option[1]:
-        while computer_option[0] == computer_option[1]:
-          computer_option[1] = random.choice(options)
-
-      print("You chose: " + player_choice[0] + " and " + player_choice[1])
-      print("The computer chose: " + computer_option[0] + " and " + computer_option[1])
-      print("You will now choose to remove one of your choices and the computer will do the same.")
-
-      remove = input(player_choice[0]+ " or " + player_choice[1] + ", which do you want to remove? ").lower()
-      while remove not in player_choice:
-        remove = input(f"Invalid input. Please choose one of your options to remove: {player_choice[0], player_choice[1]} ").lower()
-      player_choice.remove(remove)
-      cremove = random.choice(computer_option)
-      computer_option.remove(cremove)
-
-      print("You chose to remove: " + remove)
-      print("The computer chose to remove: " + cremove)
-      print("You are left with: " + player_choice[0] + "!\n" + "The computer is left with: " + computer_option[0] + "!")
-
-      if player_choice[0] == computer_option[0]:
-        print("It's a tie!")
-      elif (player_choice[0] == "rock" and computer_option[0] == "scissors") or (player_choice[0] == "scissors" and computer_option[0] == "paper") or (player_choice[0] == "paper" and computer_option[0] == "rock"):
-        print("You Win!")
-        rps_streak += 1
-      else:
-        print("You Lose!")
-        rps_streak = 0
-      print("Your current win streak is: " + str(rps_streak))
-
-      rpscontinue = int(input("Would you like to continue playing? \nIf you leave now then your score will be scored \n1: Yes \n2: No\n"))
-      while rpscontinue not in [1,2]:
-        rpscontinue = int(input("Invalid input.\n1: Yes\n2: No\n"))
-      if rpscontinue == 2:
-        rpscontinue = False
-        print("Thanks for playing!")
-        if rps_streak > 0:
-            print("Your final score is: " + str(rps_streak))
-            print("Your scores have been saved as follows: " + str(rps_scores))
-        else:
-            print("You have no score to save. Better luck next time!")
 rps_game()
-'''
