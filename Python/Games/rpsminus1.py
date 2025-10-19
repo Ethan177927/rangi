@@ -14,6 +14,8 @@ rpsstreak = 0
 
 def rps_game():
     global rpsstreak
+    global framerps
+
     # bg = "#f8f8f8"
     # Fonts
     titlefont = ("Helvetica Neue", 30, "bold")
@@ -35,6 +37,8 @@ def rps_game():
     rps1.geometry(f"850x650+{swidth}+{sheight}")
     rps1.configure(bg="#f8f8f8")
     rps1.title("Rock Paper Scissors Minus")
+    framerps = Frame(rps1, bg="#f8f8f8")
+
     title = Label(
         rps1,
         text="Rock Paper Scissors Minus One",
@@ -65,16 +69,26 @@ def rps_game():
     def reset_game():
 
         player_choice.clear()
-        botselect.destroy()
-        removal.destroy()
+        try:
+            botselect.destroy()
+        except:
+            pass
+        try: 
+            removal.destroy()
+        except:
+            pass
+        try:
+            remove_frame.destroy()
+        except:
+            pass    
         button_choice.clear()
-        remove_frame.destroy()
         computer_option.clear()
-        result.config(text="")
+        result.config(text = "")
+
         
-        for button in buttons:
-            button.pack_forget()
+
         play_btn.pack(padx=10, pady=10)
+        framerps.pack_forget()
 
     def determine(player_final, computer_final):
         win_cond = {"rock": "scissors",
@@ -90,13 +104,11 @@ def rps_game():
             result.config(text="You Lose!")
             rpsstreak = 0
         streaklabel.config(text=f"Current Win Streak: {rpsstreak}")
+
         rps1.after(2000, reset_game)
 
     def check():
-        global fcomputerchoice
-        global remove_frame
-        global botselect
-        global removal
+        global fcomputerchoice, remove_frame, botselect, removal
         if len(player_choice) == 2:
             for i in range(3):
                 if options[i] in player_choice:
@@ -156,12 +168,8 @@ def rps_game():
         player_choice.clear()
         button_choice.clear()
         computer_option.clear()
-        global framerps
-        try:
-            frame_rps.destroy()
-        except:
-            pass
-        framerps = Frame(rps1, bg="#f8f8f8")
+
+   
         framerps.pack(pady=20)
     
         for button in buttons:
@@ -190,8 +198,6 @@ def rps_game():
         bg="white",
         fg="black")
     play_btn.pack(padx=10, pady=10)
-    framerps = Frame(rps1, bg="#f8f8f8")
-    framerps.pack(pady=20)
     rockbtn = tk.Button(
         framerps,
         text='Rock',
