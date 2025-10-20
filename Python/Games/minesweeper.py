@@ -177,11 +177,11 @@ def minesweeper_game():
     easyspeed =  Label(easyframe, text = f"Fastest Time: {easytime}s", font = textfont, bg = "#f8f8f8")
     mediumspeed =  Label(midframe, text = f"Fastest Time: {mediumtime}s", font = textfont, bg = "#f8f8f8")
     hardspeed =  Label(hardframe, text = f"Fastest Time: {hardtime}s", font = textfont, bg = "#f8f8f8")
-    if easytime != 0:
+    if easytime >  0:
         easyspeed.pack(side = 'left', padx = 10)
-    if mediumtime != 0:
+    if mediumtime > 0:
         mediumspeed .pack(side = 'left', padx = 10)
-    if hardtime != 0:
+    if hardtime > 0:
         hardspeed .pack(side = 'left', padx = 10)
     buttons = {}
 
@@ -380,12 +380,19 @@ def minesweeper_game():
             if width == 9 and height ==9:
                 if easytime == 0 or times < easytime:
                     easytime = times
+                    easyspeed.config(text = f"Fastest Time: {easytime}s")
+                    easyspeed.pack(side = 'left', padx = 10)
             if width == 16 and height ==16:
                 if mediumtime == 0 or times < mediumtime:
                     mediumtime = times
+                    mediumspeed.config(text = f"Fastest Time: {mediumtime}s")
+                    mediumspeed.pack(side = 'left', padx = 10)
+
             if width == 21 and height ==21:
                 if hardtime == 0 or times < hardtime:
                     hardtime = times
+                    hardspeed.config(text = f"Fastest Time: {hardtime}s")
+                    hardspeed.pack(side = 'left', padx = 10)
             print(times)
             flags_label.config(
                 text=f"You completed Minesweeper - Easy in {times} seconds!")
