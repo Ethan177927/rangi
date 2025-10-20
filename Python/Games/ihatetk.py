@@ -147,6 +147,4 @@ def tk_window():
         bg="#f8f8f8")
 
     tkmain.mainloop()
-
-
 tk_window()

@@ -8,13 +8,13 @@ timed = []
 # py -m autopep8 --in-place --aggressive --aggressive
 
 height = -1
+easytime = 0
+mediumtime = 0
+hardtime = 0
 
 
 def minesweeper_game():
-    global flags
-    global mines
-    global width
-    global height
+    global flags, mines, width, height
     tkmine = tk.Tk()
     tkmine.configure(bg="#f8f8f8")
 
@@ -77,20 +77,14 @@ def minesweeper_game():
     text.pack(padx=10)
 
     def set_difficulty(level):
-        global Difficulty
-        global grid_size
-        global flags
-        global mines
-        global width
-        global height
+        global Difficulty, grid_size, flags, mines, width, height
         Difficulty = level
         if Difficulty == "easy":
-            grid_size = [8, 8, 10, 10]
+            grid_size = [9, 9, 10, 10]
         elif Difficulty == "medium":
-            grid_size = [15, 15, 40, 40]
+            grid_size = [16, 16, 40, 40]
         elif Difficulty == "hard":
-            grid_size = [20, 20, 99, 99]
-
+            grid_size = [21, 21, 99, 99]
         flags = grid_size[3]
         flags_label.configure(text=f"Flags remaining: {flags}")
         mines = grid_size[2]
@@ -178,17 +172,32 @@ def minesweeper_game():
         bg="#f8f8f8",
         font=textfont)
     hardtext.pack(padx=10, pady=10, side="left")
-
+    easyspeed = Label(
+        easyframe,
+        text=f"Fastest Time: {easytime}s",
+        font=textfont,
+        bg="#f8f8f8")
+    mediumspeed = Label(
+        midframe,
+        text=f"Fastest Time: {mediumtime}s",
+        font=textfont,
+        bg="#f8f8f8")
+    hardspeed = Label(
+        hardframe,
+        text=f"Fastest Time: {hardtime}s",
+        font=textfont,
+        bg="#f8f8f8")
+    if easytime != 0:
+        easyspeed.pack(side='left', padx=10)
+    if mediumtime != 0:
+        mediumspeed .pack(side='left', padx=10)
+    if hardtime != 0:
+        hardspeed .pack(side='left', padx=10)
     buttons = {}
 
     def createGrid():
-        global start
+        global start, flags, mines, width, height, frame
         start = time.time()
-        global flags
-        global mines
-        global width
-        global height
-        global frame
         frame = tk.Frame(tkmine, cursor='target', height=5, width=5)
         frame.pack(fill="both", expand=True, side="top", padx=20, pady=20)
         for x in range(height):
@@ -215,18 +224,13 @@ def minesweeper_game():
                     "<Button-3>",
                     lambda event,
                     x=x,
-                    y=y: onRightClick(
-                        x,
-                        y))
+                    y=y: onRightClick(x, y))
 
     flagged = []
 
     def onRightClick(x, y):
-        global flags
-        global mines
-        global width
-        global height
-        global Game_overMS
+        global flags, mines, width, height, Game_overMS
+
         if Game_overMS != 2:
             global flags
             if (x, y) in revealed:
@@ -317,6 +321,9 @@ def minesweeper_game():
     def destroy():
         tkmine.destroy()
 
+    def reset_game():
+        print('egg')
+
     def combined():
         destroy()
         minesweeper_game()
@@ -345,11 +352,7 @@ def minesweeper_game():
         Btnno.pack(side="left", padx=10, pady=10)
 
     def Game_Over():
-        global Game_overMS
-        global frame
-        global end
-        global start
-        global text
+        global easyspeed, mediumspeed, hardspeed, Game_overMS, frame, end, start, text, height, width
         if Game_overMS == 2:
             for (x, y) in Mine_list:
                 buttons[(x, y)].config(text="💥", bg="red")
@@ -361,6 +364,15 @@ def minesweeper_game():
             end = time.time()
             times = end - start
             times = round(times, 2)
+            if width == 9 and height == 9:
+                if easytime == 0 or times < easytime:
+                    easytime = times
+            if width == 16 and height == 16:
+                if mediumtime == 0 or times < mediumtime:
+                    mediumtime = times
+            if width == 21 and height == 21:
+                if hardtime == 0 or times < hardtime:
+                    hardtime = times
             print(times)
             flags_label.config(
                 text=f"You completed Minesweeper - Easy in {times} seconds!")
@@ -372,3 +384,6 @@ def minesweeper_game():
 
             print("Congratulations! You found all the mines!")
     tkmine.mainloop()
+
+
+minesweeper_game()

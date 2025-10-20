@@ -10,13 +10,13 @@ options = ["rock", "paper", "scissors"]
 computer_option = []
 fcomputerchoice = 1
 rpsstreak = 0
-
+highstreak = 0
 
 def rps_game():
     global rpsstreak
     global framerps
+    global highstreak
 
-    # bg = "#f8f8f8"
     # Fonts
     titlefont = ("Helvetica Neue", 30, "bold")
     textfont = ("Helvetica Neue", 15)
@@ -38,6 +38,7 @@ def rps_game():
     rps1.configure(bg="#f8f8f8")
     rps1.title("Rock Paper Scissors Minus")
     framerps = Frame(rps1, bg="#f8f8f8")
+    streaks = Frame(rps1, bg="#f8f8f8")
 
     title = Label(
         rps1,
@@ -49,6 +50,7 @@ def rps_game():
     def BackMenus():
         rps1.destroy()
         subprocess.run(["python", r"Python\Games\ihatetk.py"])
+    streaks.pack(pady=5)
 
     BackMenu = Button(
         rps1,
@@ -60,14 +62,19 @@ def rps_game():
     result = Label(rps1, text="", font=textfont, bg="#f8f8f8")
     result.pack(pady=10)
     streaklabel = Label(
-        rps1,
+        streaks,
         text=f"Current Win Streak: {rpsstreak}",
         font=textfont,
         bg="#f8f8f8")
-    streaklabel.pack(pady=10)
-
+    streaklabel.pack(side = 'left', padx = 5)
+    highstreaklabel = Label(
+        streaks,
+        text=f"Highest Win Streak: {highstreak}",
+        font=textfont,
+        bg="#f8f8f8")
+    highstreaklabel.pack(side = 'left', padx = 5)
+ 
     def reset_game():
-
         player_choice.clear()
         try:
             botselect.destroy()
@@ -94,12 +101,16 @@ def rps_game():
         win_cond = {"rock": "scissors",
                     "scissors": "paper",
                     "paper": "rock"}
+        global highstreak
         global rpsstreak
         if player_final == computer_final:
             result.config(text="It's a Tie!")
         elif win_cond[player_final] == computer_final:
             result.config(text="You Win!")
             rpsstreak += 1
+            if rpsstreak > highstreak:
+                highstreak = rpsstreak
+            highstreaklabel.config(text=f"Highest Win Streak: {highstreak}")
         else:
             result.config(text="You Lose!")
             rpsstreak = 0
@@ -235,6 +246,4 @@ def rps_game():
     buttons = [rockbtn, paperbtn, scissorbtn]
 
     rps1.mainloop()
-
-
 rps_game()

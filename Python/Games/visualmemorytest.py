@@ -310,8 +310,11 @@ with open("usernames.txt", "a") as f:
                 hidden_label.config(text='Invalid Input or Username exists.')
                 
                 """
+'''
 finish = 3
 with open("leaderboardvmt.txt", "a") as f:
         username = open("usernames.txt").read().strip().splitlines()[-1]
         if username not in open("leaderboardvmt.txt").read():
             f.write(f"{username}: {finish} seconds\n")
+
+            '''
