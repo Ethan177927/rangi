@@ -76,7 +76,7 @@ def minesweeper_game():
     text.pack(padx=10)
 
     def set_difficulty(level):
-        global Difficulty, grid_size, flags, mines, width, height
+        global Difficulty, grid_size, flags, mines, width, height, midx, midy
         Difficulty = level
         if Difficulty == "easy":
             grid_size = [9, 9, 10, 10]
@@ -89,15 +89,20 @@ def minesweeper_game():
         mines = grid_size[2]
         width = grid_size[0]
         height = grid_size[1]
-
+        mid = (round(width / 2), round(height / 2))
+        print(mid)
+        midx = mid[0]
+        midy = mid[1]
         easyframe.pack_forget()
         midframe.pack_forget()
         hardframe.pack_forget()
-
+        surroundingmid = [(midx - 1, midy - 1), (midx, midy - 1), (midx + 1, midy - 1),
+                          (midx - 1, midy), (midx + 1, midy),
+                          (midx - 1, midy + 1), (midx, midy + 1), (midx + 1, midy + 1)]
         for i in range(mines):
             x = random.randint(0, width - 1)
             y = random.randint(0, height - 1)
-            while (x, y) in Mine_list:
+            while (x, y) in Mine_list or (x, y) == (midx, midy) or (x, y) in surroundingmid:
                 x = random.randint(0, width - 1)
                 y = random.randint(0, height - 1)
             Mine_list.append((x, y))
@@ -210,7 +215,7 @@ def minesweeper_game():
                     lambda event,
                     x=x,
                     y=y: onRightClick(x,y))
-
+        buttons[(midx, midy)].config(bg="lightyellow")
     flagged = []
 
     def onRightClick(x, y):
@@ -362,6 +367,8 @@ def minesweeper_game():
         if Game_overMS == 2:
             for (x, y) in Mine_list:
                 buttons[(x, y)].config(text="💥", bg="red")
+                if (x, y) in flagged:
+                    buttons[(x, y)].config(text="⚑", bg="orange")
             flags_label.config(text=f"You hit a Mine! Game Over!")
             tkmine.after(2000, yesno)
 
