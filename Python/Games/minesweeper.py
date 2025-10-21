@@ -281,7 +281,6 @@ def minesweeper_game():
         else:
             buttons[(x, y)].config(text="", bg="white")
         revealed.add((x, y))
-
         if number == 0:
             surroundingtiles = [(x - 1, y - 1), (x, y - 1), (x + 1, y - 1),
                                 (x - 1, y), (x + 1, y),
@@ -293,7 +292,6 @@ def minesweeper_game():
     def onClick(x, y):
         global Game_overMS
         text.pack_forget()
-
         if Game_overMS != 2:
             print(f"Button ({x},{y}) clicked")
             if (x, y) in flagged:

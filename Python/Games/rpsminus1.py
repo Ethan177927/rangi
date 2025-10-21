@@ -1,3 +1,5 @@
+"""Rock Paper Scissors Minus One Game"""
+
 import random
 import tkinter as tk
 from tkinter import *
@@ -11,11 +13,9 @@ computer_option = []
 fcomputerchoice = 1
 rpsstreak = 0
 highstreak = 0
-
+"""py -m autopep8 --in-place --aggressive --aggressive Python\Games\rpsminus1.py"""
 def rps_game():
-    global rpsstreak
-    global framerps
-    global highstreak
+    global rpsstreak, framerps, highstreak
 
     # Fonts
     titlefont = ("Helvetica Neue", 30, "bold")

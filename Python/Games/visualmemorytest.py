@@ -6,6 +6,9 @@ import time
 import random
 import subprocess
 
+easytime = 0
+mediumtime = 0
+hardtime = 0
 
 def vmt():
     """Visual Memory Test Game."""
@@ -17,7 +20,7 @@ def vmt():
     # Fonts
     titlefont = ("Helvetica Neue", 30, "bold")
     textfont = ("Helvetica Neue", 15)
-    Btnfont = ("Helvetica", 12, "bold")
+    btnfont = ("Helvetica", 12, "bold")
     buttons = {}
     screen_width = tkvmt.winfo_screenwidth()
     screen_height = tkvmt.winfo_screenheight()
@@ -32,7 +35,7 @@ def vmt():
         bg="#f8f8f8")
     title.pack(padx=10, pady=40)
 
-    def backMenus():
+    def backmenus():
         """Back Button Function for Visual Memory Test."""
         tkvmt.destroy()
         subprocess.run(["python", r"Python\Games\ihatetk.py"])
@@ -41,68 +44,92 @@ def vmt():
         tkvmt,
         text="Back To Menu",
         bg="#f8f8f8",
-        font=Btnfont,
-        command=backMenus)
+        font=btnfont,
+        command=backmenus)
     BackMenu.pack(padx=10, pady=10, side="bottom", anchor='w')
 
     diff = Frame(tkvmt, bg='#f8f8f8')
     diff.pack(padx=10, pady=10)
+    scores = Frame(tkvmt, bg='#f8f8f8')
+    scores.pack(pady=5)
+    
     def easy():
         """Sets Easy Difficulty for Visual Memory Test."""
-        global height,width, timeto, starttime
-        height=4
-        width=4
-        timeto=20
-        starttime=timeto
+        global height, width, timeto, starttime
+        height = 4
+        width = 4
+        timeto = 20
+        starttime = timeto
         diff.pack_forget()
+        scores.pack_forget()
         start()
-        createGrid()
+        creategrid()
 
     def medium():
-        """Sets Medium Difficulty for Visual Memory Test."""
+        """Set Medium Difficulty for Visual Memory Test."""
         global height, starttime, width, timeto
-        height=6
-        width=6
-        timeto=30
-        starttime=timeto
+        height = 6
+        width = 6
+        timeto = 30
+        starttime = timeto
         diff.pack_forget()
+        scores.pack_forget()
         start()
-        createGrid()
+        creategrid()
 
     def hard():
-        """Sets Hard Difficulty for Visual Memory Test."""
+        """Set Hard Difficulty for Visual Memory Test."""
         global height, width, starttime, timeto
-        height=8
-        width=8
-        timeto=60
-        starttime=timeto
+        height = 8
+        width = 8
+        timeto = 60
+        starttime = timeto
         diff.pack_forget()
+        scores.pack_forget()
         start()
-        createGrid()
+        creategrid()
 
     easydiff = Button(diff,
                       text="Easy Mode",
                       bg='#f8f8f8',
-                      font=Btnfont,
+                      font=btnfont,
                       command=easy)
     easydiff.pack(padx=10, pady=10, side='left')
-
+    if easytime > 0:
+        easylabel = Label(
+            scores,
+            text=f"Easy Best Time: {easytime} seconds",
+            font=textfont,
+            bg='#f8f8f8')
+        easylabel.pack(padx=5)
     mediumdiff = Button(diff,
                         text="Medium Mode",
                         bg='#f8f8f8',
-                        font=Btnfont,
+                        font=btnfont,
                         command=medium)
     mediumdiff.pack(padx=10, pady=10, side='left')
-
+    if mediumtime > 0:
+        mediumlabel = Label(
+            scores,
+            text=f"Medium Best Time: {mediumtime} seconds",
+            font=textfont,
+            bg='#f8f8f8')
+        mediumlabel.pack(padx=5)
     harddiff = Button(diff,
                       text="Hard Mode",
                       bg="#f8f8f8",
-                      font=Btnfont,
+                      font=btnfont,
                       command=hard)
     harddiff.pack(padx=10, pady=10, side='left')
-
+    if hardtime > 0:
+        hardlabel = Label(
+            scores,
+            text=f"Hard Best Time: {hardtime} seconds",
+            font=textfont,
+            bg='#f8f8f8')
+        hardlabel.pack(padx=5)
     def start():
-        """Starts Visual Memory Test Game. Creates Squares to be memorized."""
+        """Start Visual Memory Test Game. Creates Squares to be memorized."""
         global squares
         squares = []
         math = int(height * width / 3)
@@ -113,7 +140,7 @@ def vmt():
             squares.append(pos)
 
     def set_state(state):
-        """Sets Game State for Visual Memory Test."""
+        """Set Game State for Visual Memory Test."""
         global game_overvmt
         global winloss
         if state == 2:
@@ -135,6 +162,7 @@ def vmt():
                            font=textfont,
                            bg='#f8f8f8')
         time_label.pack()
+
         def count():
             nonlocal timeto
             global current_time
@@ -151,7 +179,7 @@ def vmt():
                 time_label.pack_forget()
         count()
 
-    def onClick(x, y):
+    def onclick(x, y):
         """On Click Function for Visual Memory Test."""
         global game_overvmt, one, finish
         if game_overvmt != 1:
@@ -168,7 +196,7 @@ def vmt():
             if (x, y) in squares:
                 buttons[(x, y)].configure(text="X", bg="red")
 
-    def createGrid():
+    def creategrid():
         """Creates Grid for Visual Memory Test."""
         global height, width, frame
         frame = tk.Frame(tkvmt, width=1000, height=1000, cursor='target')
@@ -183,7 +211,7 @@ def vmt():
                 b = Button(
                     frame,
                     text=" ",
-                    font=Btnfont,
+                    font=btnfont,
                     bg="#f8f8f8",
                     fg="black",
                     height = 20,
@@ -212,12 +240,13 @@ def vmt():
             for x in range(height):
                 for y in range(width):
                     b = buttons[(x, y)]
-                    b.bind("<Button-1>", lambda event, x=x, y=y: onClick(x, y))
+                    b.bind("<Button-1>", lambda event, x=x, y=y: onclick(x, y))
             countdown(timeto)
 
     def button_break():
         """Ends Visual Memory Test Game and Displays Result."""
-        global frame, text2, textl, btnAframe
+        global frame, text2, textl, btnAframe, finish, height, width
+        global easytime, mediumtime, hardtime
         print('break')
         print(winloss)
         frame.pack_forget()
@@ -229,16 +258,22 @@ def vmt():
                 bg='#f8f8f8')
         elif winloss == 3:
             if finish > 1:
+                if height == 4 and width == 4:
+                    easytime = finish
+                elif height == 6 and width == 6:
+                    mediumtime = finish
+                elif height == 8 and width == 8:
+                    hardtime = finish
                 text2 = Label(tkvmt,
-                              text = f'You took {finish} seconds to complete the game!',
-                              font = textfont,
-                              bg = '#f8f8f8')
+                              text=f'You took {finish} seconds to complete the game!',
+                              font=textfont,
+                              bg='#f8f8f8')
             else:
                 text2 = Label(tkvmt,
-                              text = f'You took {finish} second to complete the game!',
-                              font = textfont,
-                              bg = '#f8f8f8')
-            text2.pack(pady = 10, padx = 10)            
+                              text=f'You took {finish} second to complete the game!',
+                              font=textfont,
+                              bg='#f8f8f8')
+            text2.pack(pady=10, padx=10)            
             textl = Label(
                 tkvmt,
                 text='You won! Would you like to play again?',
@@ -247,10 +282,10 @@ def vmt():
         else:
             textl = Label(
                 tkvmt,
-                text = "Unknown Error Occured.",
+                text="Unknown Error Occured.",
                 font=textfont,
                 bg='#f8f8f8')
-        textl.pack(padx = 10, pady = 10)
+        textl.pack(padx=10, pady=10)
 
         def restart():
             """Restarts Visual Memory Test Game."""
@@ -277,6 +312,10 @@ def vmt():
                 textl.destroy()
             except:
                 pass
+            try:
+                scores.destroy()
+            except:
+                pass
             diff.pack()
 
         btnAframe = Frame(tkvmt, bg='#f8f8f8')
@@ -286,7 +325,7 @@ def vmt():
             text='Play Again',
             bg='#f8f8f8',
             width=10,
-            font=Btnfont,
+            font=btnfont,
             command=restart)
         btnplay.pack(side='left', padx=10, pady=10)
 
@@ -298,7 +337,7 @@ def vmt():
         btnquit = Button(
             btnAframe,
             text='Quit',
-            font=Btnfont,
+            font=btnfont,
             width=10,
             bg='#f8f8f8',
             command=destroy)
