@@ -1,9 +1,8 @@
-"""Main Menu with the name entry."""
+"""Main Menu without the name entry."""
 
 
 import tkinter as tk
 from tkinter import *
-import subprocess
 
 # Fonts
 titlefont = ("Helvetica Neue", 30, "bold")
@@ -12,7 +11,17 @@ Btnfont = ("Helvetica", 12, "bold")
 
 
 def tk_window():
-    """Create tk window."""
+    """Create Tk window."""
+    global username
+
+    try:
+        with open("usernames.txt", "r") as f:
+            lines = f.readlines()
+            username = lines[-1].strip()
+    except FileNotFoundError:
+        username = "Player"
+    print(username)
+
     tkmain = tk.Tk()
 
     tkmain.title("Alston Games Comependium")
@@ -37,62 +46,12 @@ def tk_window():
         font=titlefont,
         bg="#f8f8f8")
     title.pack(padx=10, pady=40)
-
-    # background colour
-    name_var = tk.StringVar()
-    name_label = Label(
+    welcometext = Label(
         tkmain,
-        text='Enter your name: ',
-        font=Btnfont,
+        text=f"Welcome {username} to a Game Compendium!",
+        font=textfont,
         bg="#f8f8f8")
-    name_entry = Entry(
-        tkmain,
-        textvariable=name_var,
-        font=textfont,
-        bg="#efeded",
-        fg="black",
-        width=30)
-    hidden_label = Label(
-        tkmain,
-        text='',
-        bg="#f8f8f8",
-        font=textfont,
-        fg="red")
-    hidden_label.pack()
-    name_label.pack(padx=10, pady=10)
-    name_entry.pack(padx=10, pady=10)
-    global name
-
-    def submit():
-        """Get username from user."""
-        name = name_var.get()
-        print(name)
-        with open("usernames.txt", "a") as f:
-            if name != "" and name not in open("usernames.txt").read():
-                f.write(name + "\n")
-                hidden_label.config(text='Username saved!', fg="green")
-                tkmain.after(2000, hide_username)
-            else:
-                print("Invalid Username.")
-                hidden_label.config(text='Invalid Input or Username exists.')
-
-    sub_btn = tk.Button(
-        tkmain,
-        text='Submit',
-        command=submit,
-        font=Btnfont,
-        bg="#efedef")
-    sub_btn.pack(padx=10, pady=10)
-
-    def hide_username():
-        """Hide buttons."""
-        name_label.pack_forget()
-        name_entry.pack_forget()
-        sub_btn.pack_forget()
-        hidden_label.pack_forget()
-        minesweep.pack(padx=10, pady=10, side="left")
-        rps.pack(padx=10, pady=10, side="left")
-        vmt.pack(padx=10, pady=10, side="left")
+    welcometext.pack(padx=10, pady=10)
 
     def minesweepers():
         """Open Minesweeper."""
@@ -126,6 +85,7 @@ def tk_window():
         width=20,
         height=3,
         command=minesweepers)
+    minesweep.grid(row=0, column=0, padx=10)
     rps = tk.Button(
         row_frame,
         text="Rock Paper Scissors",
@@ -135,6 +95,7 @@ def tk_window():
         width=20,
         height=3,
         command=rpsgame)
+    rps.grid(row=0, column=1, padx=10)
     vmt = tk.Button(
         row_frame,
         text="Visual Memory Test",
@@ -144,6 +105,12 @@ def tk_window():
         width=20,
         height=3,
         command=vmt)
+    vmt.grid(row=0, column=2, padx=10)
+    leaderboard = Label(
+        tkmain,
+        text="Leaderboard",
+        font=textfont,
+        bg="#f8f8f8")
 
     tkmain.mainloop()
 

@@ -2,7 +2,6 @@
 
 import tkinter as tk
 from tkinter import *
-import time
 import random
 import subprocess
 
@@ -10,9 +9,20 @@ easytime = 0
 mediumtime = 0
 hardtime = 0
 
+
 def vmt():
     """Visual Memory Test Game."""
     global squares, height, width, timeto, starttime, one, game_overvmt
+    global username
+
+    try:
+        with open("usernames.txt", "r") as f:
+            lines = f.readlines()
+            username = lines[-1].strip()
+    except FileNotFoundError:
+        username = "Player"
+    print(username)
+
     tkvmt = tk.Tk()
     tkvmt.title("Visual Memory Test")
     game_overvmt = 1
@@ -38,7 +48,13 @@ def vmt():
     def backmenus():
         """Back Button Function for Visual Memory Test."""
         tkvmt.destroy()
-        subprocess.run(["python", r"Python\Games\ihatetk.py"])
+        subprocess.run(["python", r"Python\Games\menu2.py"])
+    welcometext = Label(
+        tkvmt,
+        text=f"Welcome {username} to a Memory test!",
+        font=textfont,
+        bg="#f8f8f8")
+    welcometext.pack(padx=10, pady=10)
 
     BackMenu = Button(
         tkvmt,
@@ -52,9 +68,9 @@ def vmt():
     diff.pack(padx=10, pady=10)
     scores = Frame(tkvmt, bg='#f8f8f8')
     scores.pack(pady=5)
-    
+
     def easy():
-        """Sets Easy Difficulty for Visual Memory Test."""
+        """Set Easy Difficulty for Visual Memory Test."""
         global height, width, timeto, starttime
         height = 4
         width = 4
@@ -128,6 +144,7 @@ def vmt():
             font=textfont,
             bg='#f8f8f8')
         hardlabel.pack(padx=5)
+
     def start():
         """Start Visual Memory Test Game. Creates Squares to be memorized."""
         global squares
@@ -197,15 +214,17 @@ def vmt():
                 buttons[(x, y)].configure(text="X", bg="red")
 
     def creategrid():
-        """Creates Grid for Visual Memory Test."""
+        """Create Grid for Visual Memory Test."""
+        welcometext.pack_forget()
         global height, width, frame
-        frame = tk.Frame(tkvmt, width=1000, height=1000, cursor='target')
+        frame = tk.Frame(tkvmt, width=500, height=500, cursor='target')
         frame.pack(side="top", padx=20, pady=20)
-        frame.pack_propagate(False)
+        frame.propagate(False)
+
         for x in range(height):
-            frame.grid_rowconfigure(x, weight=1, uniform="row")
+            frame.grid_rowconfigure(x, weight=1)
         for y in range(width):
-            frame.grid_columnconfigure(y, weight=1, uniform="column")
+            frame.grid_columnconfigure(y, weight=1)
         for x in range(height):
             for y in range(width):
                 b = Button(
@@ -214,12 +233,12 @@ def vmt():
                     font=btnfont,
                     bg="#f8f8f8",
                     fg="black",
-                    height = 20,
-                    width = 20
+                    height=20,
+                    width=20
                     )
                 b.grid(row=height - 1 - x, column=y, sticky="nsew")
                 buttons[(x, y)] = b
-                b.config(state = "disabled")
+                b.config(state="disabled")
         tkvmt.after(1000, delay)
 
     def delay():
@@ -227,7 +246,7 @@ def vmt():
         change_colours()
 
     def change_colours(num=0):
-        """Changes Colours of Squares to be memorized in Visual Memory Test."""
+        """Change Colours of Squares to be memorized in Visual Memory Test."""
         global squares
         if num < len(squares):
             x, y = squares[num]
@@ -244,7 +263,7 @@ def vmt():
             countdown(timeto)
 
     def button_break():
-        """Ends Visual Memory Test Game and Displays Result."""
+        """End Visual Memory Test Game and Displays Result."""
         global frame, text2, textl, btnAframe, finish, height, width
         global easytime, mediumtime, hardtime
         print('break')
@@ -265,15 +284,17 @@ def vmt():
                 elif height == 8 and width == 8:
                     hardtime = finish
                 text2 = Label(tkvmt,
-                              text=f'You took {finish} seconds to complete the game!',
+                              text=f'You took {finish} seconds '
+                              'to complete the game!',
                               font=textfont,
                               bg='#f8f8f8')
             else:
                 text2 = Label(tkvmt,
-                              text=f'You took {finish} second to complete the game!',
+                              text=f'You took {finish} second '
+                              'to complete the game!',
                               font=textfont,
                               bg='#f8f8f8')
-            text2.pack(pady=10, padx=10)            
+            text2.pack(pady=10, padx=10)
             textl = Label(
                 tkvmt,
                 text='You won! Would you like to play again?',
@@ -288,8 +309,9 @@ def vmt():
         textl.pack(padx=10, pady=10)
 
         def restart():
-            """Restarts Visual Memory Test Game."""
-            global winloss, frame, finish, current_time, one, btnAframe, game_overvmt
+            """Restart Visual Memory Test Game."""
+            global winloss, frame, finish, current_time
+            global one, btnAframe, game_overvmt
             winloss = 0
             finish = 0
             one = 0
@@ -298,23 +320,23 @@ def vmt():
             squares.clear()
             try:
                 frame.destroy()
-            except:
+            except BaseException:
                 pass
             try:
                 btnAframe.destroy()
-            except:
+            except BaseException:
                 pass
             try:
                 text2.destroy()
-            except:
+            except BaseException:
                 pass
             try:
                 textl.destroy()
-            except:
+            except BaseException:
                 pass
             try:
                 scores.destroy()
-            except:
+            except BaseException:
                 pass
             diff.pack()
 
@@ -343,4 +365,3 @@ def vmt():
             command=destroy)
         btnquit.pack(side='left', padx=10, pady=10)
     tkvmt.mainloop()
-vmt()

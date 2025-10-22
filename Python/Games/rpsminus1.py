@@ -1,4 +1,4 @@
-"""Rock Paper Scissors Minus One Game"""
+"""Rock Paper Scissors Minus One Game."""
 
 import random
 import tkinter as tk
@@ -13,9 +13,20 @@ computer_option = []
 fcomputerchoice = 1
 rpsstreak = 0
 highstreak = 0
-"""py -m autopep8 --in-place --aggressive --aggressive Python\Games\rpsminus1.py"""
+
+
 def rps_game():
+    """Start Rock Paper Scissors Game."""
     global rpsstreak, framerps, highstreak
+    global username
+
+    try:
+        with open("usernames.txt", "r") as f:
+            lines = f.readlines()
+            username = lines[-1].strip()
+    except FileNotFoundError:
+        username = "Player"
+    print(username)
 
     # Fonts
     titlefont = ("Helvetica Neue", 30, "bold")
@@ -46,10 +57,17 @@ def rps_game():
         font=titlefont,
         bg="#f8f8f8")
     title.pack(padx=10, pady=40)
+    welcometext = Label(
+        rps1,
+        text=f"Welcome {username} to Rock Paper Scissors!",
+        font=textfont,
+        bg="#f8f8f8")
+    welcometext.pack(padx=10, pady=10)
 
     def BackMenus():
+        """Send back to menu."""
         rps1.destroy()
-        subprocess.run(["python", r"Python\Games\ihatetk.py"])
+        subprocess.run(["python", r"Python\Games\menu2.py"])
     streaks.pack(pady=5)
 
     BackMenu = Button(
@@ -66,38 +84,38 @@ def rps_game():
         text=f"Current Win Streak: {rpsstreak}",
         font=textfont,
         bg="#f8f8f8")
-    streaklabel.pack(side = 'left', padx = 5)
+    streaklabel.pack(side='left', padx=5)
     highstreaklabel = Label(
         streaks,
         text=f"Highest Win Streak: {highstreak}",
         font=textfont,
         bg="#f8f8f8")
-    highstreaklabel.pack(side = 'left', padx = 5)
- 
+    highstreaklabel.pack(side='left', padx=5)
+
     def reset_game():
+        """Reset the game."""
         player_choice.clear()
         try:
             botselect.destroy()
-        except:
+        except BaseException:
             pass
-        try: 
+        try:
             removal.destroy()
-        except:
+        except BaseException:
             pass
         try:
             remove_frame.destroy()
-        except:
-            pass    
+        except BaseException:
+            pass
         button_choice.clear()
         computer_option.clear()
-        result.config(text = "")
-
-        
+        result.config(text="")
 
         play_btn.pack(padx=10, pady=10)
         framerps.pack_forget()
 
     def determine(player_final, computer_final):
+        """Determine the winner."""
         win_cond = {"rock": "scissors",
                     "scissors": "paper",
                     "paper": "rock"}
@@ -119,6 +137,7 @@ def rps_game():
         rps1.after(2000, reset_game)
 
     def check():
+        """Display user and bot options."""
         global fcomputerchoice, remove_frame, botselect, removal
         if len(player_choice) == 2:
             for i in range(3):
@@ -167,6 +186,7 @@ def rps_game():
             fcomputerchoice = random.choice(computer_option)
 
     def pick(choice, button):
+        """Append buttons and choices to list."""
         player_choice.append(choice)
         button_choice.append(button)
         print(choice)
@@ -174,18 +194,19 @@ def rps_game():
         check()
 
     def play():
+        """Start Rock Paper Scissors."""
         print("Playing RPS-1")
+        welcometext.pack_forget()
         play_btn.pack_forget()
         player_choice.clear()
         button_choice.clear()
         computer_option.clear()
 
-   
         framerps.pack(pady=20)
-    
+
         for button in buttons:
             button.pack(padx=10, pady=10, side="left")
-        
+
         computer_option.append(random.choice(options))
         computer_option.append(random.choice(options))
         if computer_option[0] == computer_option[1]:
@@ -193,6 +214,7 @@ def rps_game():
                 computer_option[1] = random.choice(options)
 
     def player_remove(choice):
+        """Make user remove choice."""
         for btn in button_choice:
             btn.pack_forget()
         player_choice.remove(choice)
@@ -246,4 +268,3 @@ def rps_game():
     buttons = [rockbtn, paperbtn, scissorbtn]
 
     rps1.mainloop()
-rps_game()
