@@ -3,12 +3,12 @@
 
 import tkinter as tk
 from tkinter import *
-import subprocess
 
 # Fonts
 titlefont = ("Helvetica Neue", 30, "bold")
 textfont = ("Helvetica Neue", 15)
-Btnfont = ("Helvetica", 12, "bold")
+btnfont = ("Helvetica", 12, "bold")
+gamefont = ("Helvetica", 15, "bold")
 
 
 def tk_window():
@@ -43,7 +43,7 @@ def tk_window():
     name_label = Label(
         tkmain,
         text='Enter your name: ',
-        font=Btnfont,
+        font=btnfont,
         bg="#f8f8f8")
     name_entry = Entry(
         tkmain,
@@ -63,15 +63,53 @@ def tk_window():
     name_entry.pack(padx=10, pady=10)
     global name
 
+    def pack_buttons():
+        """Pack the buttons of the games."""
+        row_frame = Frame(tkmain, bg='#f8f8f8')
+        row_frame.pack(pady=10)
+
+        minesweep = tk.Button(
+            row_frame,
+            text="Minesweeper",
+            font=gamefont,
+            bg="#f8f8f8",
+            fg="black",
+            width=20,
+            height=4,
+            command=minesweepers)
+        minesweep.grid(row=0, column=0, padx=10, pady = 10)
+
+        rps = tk.Button(
+            row_frame,
+            text="Rock Paper Scissors",
+            font=gamefont,
+            bg="#f8f8f8",
+            fg="black",
+            width=20,
+            height=4,
+            command=rpsgame)
+        rps.grid(row=1, column=0, padx=10, pady = 10)
+        
+        vmt = tk.Button(
+            row_frame,
+            text="Visual Memory Test",
+            font=gamefont,
+            bg="#f8f8f8",
+            fg="black",
+            width=20,
+            height=4,
+            command=vmt_game)
+        vmt.grid(row=2, column=0, padx=10, pady = 10)
+
     def submit():
         """Get username from user."""
         name = name_var.get()
         print(name)
         with open("usernames.txt", "a") as f:
-            if name != "" and name not in open("usernames.txt").read():
+            if name != "" and len(name) < 20:
                 f.write(name + "\n")
                 hidden_label.config(text='Username saved!', fg="green")
-                tkmain.after(2000, hide_username)
+                tkmain.after(1500, hide_username)
             else:
                 print("Invalid Username.")
                 hidden_label.config(text='Invalid Input or Username exists.')
@@ -80,7 +118,7 @@ def tk_window():
         tkmain,
         text='Submit',
         command=submit,
-        font=Btnfont,
+        font=btnfont,
         bg="#efedef")
     sub_btn.pack(padx=10, pady=10)
 
@@ -90,9 +128,8 @@ def tk_window():
         name_entry.pack_forget()
         sub_btn.pack_forget()
         hidden_label.pack_forget()
-        minesweep.pack(padx=10, pady=10, side="left")
-        rps.pack(padx=10, pady=10, side="left")
-        vmt.pack(padx=10, pady=10, side="left")
+        pack_buttons()
+
 
     def minesweepers():
         """Open Minesweeper."""
@@ -108,42 +145,12 @@ def tk_window():
         import rpsminus1
         rpsminus1.rps_game()
 
-    def vmt():
+    def vmt_game():
         """Open Visual Memory Test."""
         print("visual Memory Test opening...")
         tkmain.destroy()
         import visualmemorytest
         visualmemorytest.vmt()
-    row_frame = Frame(tkmain, bg='#f8f8f8')
-    row_frame.pack(pady=10)
-
-    minesweep = tk.Button(
-        row_frame,
-        text="Minesweeper",
-        font=Btnfont,
-        bg="#f8f8f8",
-        fg="black",
-        width=20,
-        height=3,
-        command=minesweepers)
-    rps = tk.Button(
-        row_frame,
-        text="Rock Paper Scissors",
-        font=Btnfont,
-        bg="#f8f8f8",
-        fg="black",
-        width=20,
-        height=3,
-        command=rpsgame)
-    vmt = tk.Button(
-        row_frame,
-        text="Visual Memory Test",
-        font=Btnfont,
-        bg="#f8f8f8",
-        fg="black",
-        width=20,
-        height=3,
-        command=vmt)
 
     tkmain.mainloop()
 

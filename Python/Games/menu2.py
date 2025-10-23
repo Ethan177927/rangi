@@ -7,8 +7,8 @@ from tkinter import *
 # Fonts
 titlefont = ("Helvetica Neue", 30, "bold")
 textfont = ("Helvetica Neue", 15)
-Btnfont = ("Helvetica", 12, "bold")
-
+btnfont = ("Helvetica", 12, "bold")
+gamefont = ("Helvetica", 15, "bold")
 
 def tk_window():
     """Create Tk window."""
@@ -48,7 +48,7 @@ def tk_window():
     title.pack(padx=10, pady=40)
     welcometext = Label(
         tkmain,
-        text=f"Welcome {username} to a Game Compendium!",
+        text=f"What game would you like to play next {username}?",
         font=textfont,
         bg="#f8f8f8")
     welcometext.pack(padx=10, pady=10)
@@ -79,33 +79,33 @@ def tk_window():
     minesweep = tk.Button(
         row_frame,
         text="Minesweeper",
-        font=Btnfont,
+        font=gamefont,
         bg="#f8f8f8",
         fg="black",
         width=20,
-        height=3,
+        height=4,
         command=minesweepers)
-    minesweep.grid(row=0, column=0, padx=10)
+    minesweep.grid(row=0, column=0, padx=10, pady = 10)
     rps = tk.Button(
         row_frame,
         text="Rock Paper Scissors",
-        font=Btnfont,
+        font=gamefont,
         bg="#f8f8f8",
         fg="black",
         width=20,
-        height=3,
+        height=4,
         command=rpsgame)
-    rps.grid(row=0, column=1, padx=10)
+    rps.grid(row=1, column=0, padx=10, pady = 10)
     vmt = tk.Button(
         row_frame,
         text="Visual Memory Test",
-        font=Btnfont,
+        font=gamefont,
         bg="#f8f8f8",
         fg="black",
         width=20,
-        height=3,
+        height=4,
         command=vmt)
-    vmt.grid(row=0, column=2, padx=10)
+    vmt.grid(row=2, column=0, padx=10, pady = 10)
     leaderboard = Label(
         tkmain,
         text="Leaderboard",

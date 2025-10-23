@@ -35,6 +35,9 @@ def minesweeper_game():
     textfont = ("Helvetica Neue", 15)
     btnfont = ("Helvetica", 12, "bold")
 
+   
+
+
     titlemine = Label(
         tkmine,
         text="Minesweeper",
@@ -308,7 +311,7 @@ def minesweeper_game():
                 flagged.append((x, y))
                 if mines == 0:
                     Game_overMS = 1
-                    Game_Over()
+                    game_over()
             elif (x, y) in flagged:
                 print(f"Flag removed at ({x},{y})")
                 buttons[(x, y)].config(text=" ", bg="lightgrey")
@@ -374,7 +377,7 @@ def minesweeper_game():
             if (x, y) in Mine_list:
                 buttons[(x, y)].config(text="💥", bg="red")
                 Game_overMS = 2
-                Game_Over()
+                game_over()
                 print("You hit a mine! Game Over!")
                 return
             if clicked_first:
@@ -434,7 +437,7 @@ def minesweeper_game():
             command=destroy)
         Btnno.pack(side="left", padx=10, pady=10)
 
-    def Game_Over():
+    def game_over():
         """Display game over screen."""
         global easytime, mediumtime, hardtime, Game_overMS, frame
         global end, start, text, height, width

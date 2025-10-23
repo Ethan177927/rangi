@@ -5,7 +5,6 @@ import tkinter as tk
 from tkinter import *
 import subprocess
 
-
 player_choice = []
 button_choice = []
 options = ["rock", "paper", "scissors"]
@@ -31,17 +30,20 @@ def rps_game():
     # Fonts
     titlefont = ("Helvetica Neue", 30, "bold")
     textfont = ("Helvetica Neue", 15)
-    Btnfont = ("Helvetica", 12, "bold")
+    btnfont = ("Helvetica", 12, "bold")
 
     rps1 = tk.Tk()
+    rps1.title("Rock Paper Scissors")
 
     screen_width = rps1.winfo_screenwidth()
     screen_height = rps1.winfo_screenheight()
 
     # found off of google to get the screenheigth and width of the user's
     # screen.
+
     swidth = int(screen_width / 2 - 850 / 2)
     sheight = int(screen_height / 2 - 650 / 2)
+
 
     # sets size of the window and the +swidth and +sheight are x,y values for
     # where the window opens on the screen.
@@ -64,19 +66,19 @@ def rps_game():
         bg="#f8f8f8")
     welcometext.pack(padx=10, pady=10)
 
-    def BackMenus():
+    def backmenus():
         """Send back to menu."""
         rps1.destroy()
         subprocess.run(["python", r"Python\Games\menu2.py"])
     streaks.pack(pady=5)
 
-    BackMenu = Button(
+    backmenu = Button(
         rps1,
         text="Back To Menu",
         bg="#f8f8f8",
-        font=Btnfont,
-        command=BackMenus)
-    BackMenu.pack(padx=10, pady=10, side="bottom", anchor='w')
+        font=btnfont,
+        command=backmenus)
+    backmenu.pack(padx=10, pady=10, side="bottom", anchor='w')
     result = Label(rps1, text="", font=textfont, bg="#f8f8f8")
     result.pack(pady=10)
     streaklabel = Label(
@@ -179,7 +181,7 @@ def rps_game():
                     command=lambda c=choice: player_remove(c),
                     width=20,
                     height=5,
-                    font=Btnfont,
+                    font=btnfont,
                     bg="white",
                     fg="black")
                 btn.pack(padx=10, pady=10, side="left")
@@ -227,7 +229,7 @@ def rps_game():
         command=play,
         width=25,
         height=10,
-        font=Btnfont,
+        font=btnfont,
         bg="white",
         fg="black")
     play_btn.pack(padx=10, pady=10)
@@ -239,7 +241,7 @@ def rps_game():
             rockbtn),
         width=15,
         height=5,
-        font=Btnfont,
+        font=btnfont,
         bg="white",
         fg="black")
     paperbtn = tk.Button(
@@ -250,7 +252,7 @@ def rps_game():
             paperbtn),
         width=15,
         height=5,
-        font=Btnfont,
+        font=btnfont,
         bg="white",
         fg="black")
     scissorbtn = tk.Button(
@@ -261,7 +263,7 @@ def rps_game():
             scissorbtn),
         width=15,
         height=5,
-        font=Btnfont,
+        font=btnfont,
         bg="white",
         fg="black")
 

@@ -49,6 +49,7 @@ def vmt():
         """Back Button Function for Visual Memory Test."""
         tkvmt.destroy()
         subprocess.run(["python", r"Python\Games\menu2.py"])
+
     welcometext = Label(
         tkvmt,
         text=f"Welcome {username} to a Memory test!",
@@ -181,6 +182,7 @@ def vmt():
         time_label.pack()
 
         def count():
+            """Start countdown timer for vmt."""
             nonlocal timeto
             global current_time
             current_time = timeto

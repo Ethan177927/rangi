@@ -1,3 +1,7 @@
+# random testing document, not part of assignment
+
+
+
 options = ["easy", "medium", "hard"]
 Difficulty = ""
 grid_size = [0,0,0,0]
