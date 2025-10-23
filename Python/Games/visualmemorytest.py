@@ -367,4 +367,3 @@ def vmt():
             command=destroy)
         btnquit.pack(side='left', padx=10, pady=10)
     tkvmt.mainloop()
-vmt()
