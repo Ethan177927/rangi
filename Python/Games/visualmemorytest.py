@@ -356,7 +356,7 @@ def vmt():
         def destroy():
             """Quits Visual Memory Test Game."""
             tkvmt.destroy()
-            subprocess.run(["python", r"Python\Games\ihatetk.py"])
+            subprocess.run(["python", r"Python\Games\menu2.py"])
 
         btnquit = Button(
             btnAframe,
@@ -367,3 +367,4 @@ def vmt():
             command=destroy)
         btnquit.pack(side='left', padx=10, pady=10)
     tkvmt.mainloop()
+vmt()
